@@ -137,6 +137,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            position: relative; /* تفعيل الموضع النسبي لوضع الشارة بداخل الزر */
         }
 
         .tab-btn:hover {
@@ -152,6 +153,27 @@
 
         .tab-btn i {
             font-size: 0.95rem;
+        }
+
+        /* تنسيق شارة العداد مثل شارات دراما المجد بالضبط */
+        .fav-badge {
+            background-color: var(--favorite-color);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 50px;
+            min-width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--card-bg);
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn.active .fav-badge {
+            border-color: var(--primary-color);
         }
 
         .search-container {
@@ -513,7 +535,10 @@
         <button class="tab-btn" onclick="switchTab('مؤثرات', this)"><i class="fa-solid fa-wand-magic-sparkles"></i> مؤثرات</button>
         <button class="tab-btn" onclick="switchTab('انتقالات', this)"><i class="fa-solid fa-arrow-right-arrow-left"></i> انتقالات</button>
         <button class="tab-btn" onclick="switchTab('صوت', this)"><i class="fa-solid fa-microphone"></i> صوت</button>
-        <button class="tab-btn" onclick="switchTab('favorites', this)"><i class="fa-solid fa-heart"></i> المفضلة</button>
+        <button class="tab-btn" onclick="switchTab('favorites', this)">
+            <i class="fa-solid fa-heart"></i> المفضلة 
+            <span id="favBadge" class="fav-badge">0</span>
+        </button>
     </div>
 
     <div class="search-container">
@@ -522,7 +547,7 @@
     </div>
 
     <div id="audioContainer" class="audio-list">
-        <div class="status-message" id="statusMessage"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب البيانات...</div>
+        <div class="status-message" id="statusMessage"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب البيانات من الأوراق...</div>
     </div>
 </div>
 
@@ -554,9 +579,22 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    // دالة لتوليد معرّف آمن ونظيف يعتمد على الرابط لتجنب مشاكل تشفير الحروف العربية
     function generateCleanId(url, index, prefix) {
         return prefix + '-' + index + '-' + url.replace(/[^a-zA-Z0-9]/g, '').substr(-10);
+    }
+
+    // دالة تحديث الشارة التلقائية
+    function updateFavBadge() {
+        const badge = document.getElementById('favBadge');
+        if (badge) {
+            badge.textContent = favoritesList.length;
+            // إخفاء العداد إذا كان صفر، أو إظهاره إذا احتوى على عناصر ليكون المظهر مرتباً
+            if (favoritesList.length === 0) {
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = 'inline-flex';
+            }
+        }
     }
 
     async function fetchSheetData(sheetName) {
@@ -567,7 +605,6 @@
             const json = JSON.parse(text.substr(47).slice(0, -2));
             const rows = json.table.rows.slice(1);
 
-            // الترتيب الافتراضي هنا يأتي من الأقدم للأحدث (كما هو مُدخل بالترتيب الطبيعي للجدول للأسفل)
             return rows.map((row, idx) => {
                 const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
                 const url = row.c[1] ? row.c[1].v : ''; 
@@ -587,13 +624,11 @@
 
     async function fetchAllSheetsData() {
         try {
-            // جلب البيانات بشكل مستقل لكل ورقة
             categoriesData['آهات'] = await fetchSheetData('آهات');
             categoriesData['مؤثرات'] = await fetchSheetData('مؤثرات');
             categoriesData['انتقالات'] = await fetchSheetData('انتقالات');
             categoriesData['صوت'] = await fetchSheetData('صوت');
 
-            // تجميع كل الصوتيات المتاحة في مصفوفة واحدة لاستخراج العينات العشوائية لقسم الكل
             let pool = [
                 ...categoriesData['آهات'],
                 ...categoriesData['مؤثرات'],
@@ -601,15 +636,14 @@
                 ...categoriesData['صوت']
             ];
 
-            // إزالة الروابط المكررة للحفاظ على التناسق
             let uniquePoolMap = new Map();
             pool.forEach(item => uniquePoolMap.set(item.url, item));
             let uniquePool = Array.from(uniquePoolMap.values());
 
-            // خوارزمية: اختيار 6 صوتيات عشوائية تماماً عند كل تحديث للصفحة لقسم "الكل"
             let shuffled = [...uniquePool].sort(() => 0.5 - Math.random());
             randomAllAudio = shuffled.slice(0, 6);
 
+            updateFavBadge(); // تحديث شارة العداد عند تشغيل المتصفح للمرة الأولى
             renderAudioCards();
         } catch (err) {
             document.getElementById('statusMessage').innerHTML = 'حدث خطأ أثناء تحميل الملفات الصوتية.';
@@ -631,6 +665,7 @@
             favoritesList.push(id);
         }
         localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
+        updateFavBadge(); // تحديث فوري للشارة عند الضغط على زر القلب
         renderAudioCards();
     }
 
@@ -641,26 +676,19 @@
 
         let listToRender = [];
 
-        // معالجة القوائم حسب الفئة النشطة والأقدم فالأحدث
         if (currentTab === 'all') {
             listToRender = [...randomAllAudio]; 
         } else if (currentTab === 'favorites') {
-            // جلب عناصر المفضلة من القائمة الكاملة
             let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
             listToRender = pool.filter(item => favoritesList.includes(item.id));
             
-            // إزالة التكرار بالروابط
             let uniqueFavs = new Map();
             listToRender.forEach(item => uniqueFavs.set(item.url, item));
             listToRender = Array.from(uniqueFavs.values());
-            
-            // الفرز في المفضلة: من الأقدم للأحدث (حسب ظهورها الأساسي بالترتيب)
         } else {
-            // عرض الفئات المخصصة (من الأقدم للأحدث بشكل طبيعي)
             listToRender = [...categoriesData[currentTab]];
         }
 
-        // تطبيق البحث المباشر
         let filtered = listToRender.filter(item => {
             return item.title.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm);
         });
