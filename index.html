@@ -137,7 +137,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            position: relative; /* تفعيل الموضع النسبي لوضع الشارة بداخل الزر */
+            position: relative;
         }
 
         .tab-btn:hover {
@@ -155,7 +155,6 @@
             font-size: 0.95rem;
         }
 
-        /* تنسيق شارة العداد مثل شارات دراما المجد بالضبط */
         .fav-badge {
             background-color: var(--favorite-color);
             color: #ffffff;
@@ -571,7 +570,6 @@
 
 <script>
     const sheetId = '1mvsDJJRJuiDg1s45KwJw7x6dnodiPZck8WNAFz_C8tU';
-    const sheetNames = ['الكل', 'آهات', 'مؤثرات', 'انتقالات', 'صوت'];
     
     let categoriesData = { 'آهات': [], 'مؤثرات': [], 'انتقالات': [], 'صوت': [] };
     let randomAllAudio = []; 
@@ -579,42 +577,35 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    function generateCleanId(url, index, prefix) {
-        return prefix + '-' + index + '-' + url.replace(/[^a-zA-Z0-9]/g, '').substr(-10);
+    // دالة لتوليد ID ثابت وموحد معتمد على الرابط فقط لحل مشكلة اختفاء المفضلة
+    function generateCleanId(url) {
+        return 'audio-' + url.replace(/[^a-zA-Z0-9]/g, '').substr(-15);
     }
 
-    // دالة تحديث الشارة التلقائية
     function updateFavBadge() {
         const badge = document.getElementById('favBadge');
         if (badge) {
             badge.textContent = favoritesList.length;
-            // إخفاء العداد إذا كان صفر، أو إظهاره إذا احتوى على عناصر ليكون المظهر مرتباً
-            if (favoritesList.length === 0) {
-                badge.style.display = 'none';
-            } else {
-                badge.style.display = 'inline-flex';
-            }
+            badge.style.display = favoritesList.length === 0 ? 'none' : 'inline-flex';
         }
     }
 
-async function fetchSheetData(sheetName) {
+    async function fetchSheetData(sheetName) {
         try {
             const queryUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${encodeURIComponent(sheetName)}&tqx=out:json&headers=0&cacheBust=${Date.now()}`;
             const res = await fetch(queryUrl);
             const text = await res.text();
             const json = JSON.parse(text.substr(47).slice(0, -2));
-            
-            // تم تعديلها هنا لتقرأ من أول صف مباشرة دون حذف الصف الأول
             const rows = json.table.rows; 
 
-            return rows.map((row, idx) => {
+            return rows.map((row) => {
                 const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
                 const url = row.c[1] ? row.c[1].v : ''; 
                 const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
                 const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
                 const dateUpdated = row.c[4] ? row.c[4].f || row.c[4].v : '';
                 const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
-                const uniqueId = generateCleanId(url, idx, sheetName);
+                const uniqueId = generateCleanId(url);
                 
                 return { id: uniqueId, title, url, desc, dateAdded, dateUpdated, downloadUrl, category: sheetName };
             }).filter(item => item.url !== '' && item.url.startsWith('http'));
@@ -631,7 +622,6 @@ async function fetchSheetData(sheetName) {
             categoriesData['انتقالات'] = (await fetchSheetData('انتقالات')).reverse();
             categoriesData['صوت'] = (await fetchSheetData('صوت')).reverse();
 
-            // تجميع كل الصوتيات المتاحة في مصفوفة واحدة لقسم "الكل"
             let pool = [
                 ...categoriesData['آهات'],
                 ...categoriesData['مؤثرات'],
@@ -639,14 +629,13 @@ async function fetchSheetData(sheetName) {
                 ...categoriesData['صوت']
             ];
 
-            // إزالة الروابط المكررة للحفاظ على التناسق
             let uniquePoolMap = new Map();
             pool.forEach(item => uniquePoolMap.set(item.url, item));
             let uniquePool = Array.from(uniquePoolMap.values());
 
-            // تعديل عشوائي بحت: خلط كل العناصر بالكامل وعرضها بشكل عشوائي في قسم "الكل"
             randomAllAudio = uniquePool.sort(() => Math.random() - 0.5);
 
+            updateFavBadge();
             renderAudioCards();
         } catch (err) {
             document.getElementById('statusMessage').innerHTML = 'حدث خطأ أثناء تحميل الملفات الصوتية.';
@@ -668,8 +657,20 @@ async function fetchSheetData(sheetName) {
             favoritesList.push(id);
         }
         localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
-        updateFavBadge(); // تحديث فوري للشارة عند الضغط على زر القلب
-        renderAudioCards();
+        updateFavBadge();
+        
+        // بدلاً من إعادة بناء الصفحة كاملة، نقوم بتحديث شكل الزر فقط فوراً لجعل الضغط سريع جداً
+        const favBtn = document.querySelector(`[data-fav-id="${id}"]`);
+        if (favBtn) {
+            const isFav = favoritesList.includes(id);
+            favBtn.classList.toggle('is-fav', isFav);
+            favBtn.innerHTML = `<i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>`;
+        }
+        
+        // إذا كنا داخل تبويب المفضلة، نحتاج لإعادة بناء الكروت لإزالة العنصر المحذوف
+        if (currentTab === 'favorites') {
+            renderAudioCards();
+        }
     }
 
     function renderAudioCards() {
@@ -704,6 +705,9 @@ async function fetchSheetData(sheetName) {
             }
             return;
         }
+
+        // استخدام DocumentFragment لدمج العناصر دفعة واحدة في الصفحة ومنع البطء
+        const fragment = document.createDocumentFragment();
 
         filtered.forEach(item => {
             const card = document.createElement('div');
@@ -753,7 +757,7 @@ async function fetchSheetData(sheetName) {
                             <i class="fa-solid fa-play" id="icon-${item.id}"></i>
                         </button>
                         <div class="control-left-group">
-                            <button class="control-btn btn-fav-toggle ${isFav}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
+                            <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
                                 <i class="${favIcon}"></i>
                             </button>
                             <button class="control-btn btn-loop-toggle" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
@@ -766,19 +770,15 @@ async function fetchSheetData(sheetName) {
                     </div>
                 </div>
             `;
-            container.appendChild(card);
+            fragment.appendChild(card);
             
+            // إصلاح البطء القاتل: نربط الأحداث فقط للمشغل الفيدرالي الشغال حالياً لمنع تحميل الصوت لجميع الكروت في الخلفية بشكل متكرر
             if (activePlayers[item.id]) {
                 setupAudioEvents(item.id);
-            } else {
-                const tempAudio = new Audio(item.url);
-                tempAudio.preload = "metadata";
-                tempAudio.addEventListener('loadedmetadata', () => {
-                    const durEl = document.getElementById(`duration-${item.id}`);
-                    if (durEl) durEl.textContent = formatTime(tempAudio.duration);
-                });
             }
         });
+
+        container.appendChild(fragment);
     }
 
     function setupAudioEvents(id) {
@@ -799,6 +799,10 @@ async function fetchSheetData(sheetName) {
             }
         };
 
+        if (audio.duration) {
+            if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
+        }
+
         audio.onloadedmetadata = () => {
             if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
         };
@@ -807,19 +811,20 @@ async function fetchSheetData(sheetName) {
             if (!audio.loop) {
                 if (icon) icon.className = 'fa-solid fa-play';
                 if (progressBar) progressBar.style.width = '0%';
-                if (currentTxt) currentTxt.textContent = '0:00';
+                if (currentTxt) currentTxt.textContent = '00:00';
             }
         };
     }
 
     function togglePlay(id, url) {
+        const icon = document.getElementById(`icon-${id}`);
+        
         if (!activePlayers[id]) {
             activePlayers[id] = { audio: new Audio(url) };
             activePlayers[id].audio.preload = "metadata";
         }
 
         const audio = activePlayers[id].audio;
-        const icon = document.getElementById(`icon-${id}`);
 
         Object.keys(activePlayers).forEach(key => {
             if (key !== id && !activePlayers[key].audio.paused) {
@@ -938,7 +943,7 @@ async function fetchSheetData(sheetName) {
     }
 
     function formatTime(seconds) {
-        if (isNaN(seconds) || !isFinite(seconds)) return "0:00";
+        if (isNaN(seconds) || !isFinite(seconds)) return "00:00";
         let min = Math.floor(seconds / 60);
         let sec = Math.floor(seconds % 60);
         if (sec < 10) sec = '0' + sec;
