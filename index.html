@@ -683,7 +683,7 @@ function toggleFavorite(id) {
         }
     }
 
-    function renderAudioCards() {
+function renderAudioCards() {
         const container = document.getElementById('audioContainer');
         container.innerHTML = '';
         const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -694,7 +694,7 @@ function toggleFavorite(id) {
             listToRender = [...randomAllAudio]; 
         } else if (currentTab === 'favorites') {
             let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
-listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesList.includes(item.url) || favoritesList.includes('audio-' + item.url.replace(/[^a-zA-Z0-9]/g, '').substr(-15)));
+            listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesList.includes(item.url) || favoritesList.includes('audio-' + item.url.replace(/[^a-zA-Z0-9]/g, '').substr(-15)));
             
             let uniqueFavs = new Map();
             listToRender.forEach(item => uniqueFavs.set(item.url, item));
@@ -716,7 +716,6 @@ listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesL
             return;
         }
 
-        // استخدام DocumentFragment لدمج العناصر دفعة واحدة في الصفحة ومنع البطء
         const fragment = document.createDocumentFragment();
 
         filtered.forEach(item => {
@@ -726,6 +725,10 @@ listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesL
             const isFav = favoritesList.includes(item.id) ? 'is-fav' : '';
             const favIcon = favoritesList.includes(item.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
             
+            // تحقق إذا كان هذا الصوت يعمل حالياً في الخلفية لتغيير أيقونة التشغيل تلقائياً
+            const isPlayingNow = activePlayers[item.id] && !activePlayers[item.id].audio.paused;
+            const playIconClass = isPlayingNow ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+
             let datesHtml = '';
             if (item.dateAdded || item.dateUpdated) {
                 datesHtml = `<div class="audio-dates-inline">`;
@@ -764,13 +767,13 @@ listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesL
                     </div>
                     <div class="buttons-row">
                         <button class="control-btn btn-play-pause" onclick="togglePlay('${item.id}', '${item.url}')">
-                            <i class="fa-solid fa-play" id="icon-${item.id}"></i>
+                            <i class="${playIconClass}" id="icon-${item.id}"></i>
                         </button>
                         <div class="control-left-group">
                             <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
                                 <i class="${favIcon}"></i>
                             </button>
-                            <button class="control-btn btn-loop-toggle" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
+                            <button class="control-btn btn-loop-toggle ${activePlayers[item.id] && activePlayers[item.id].audio.loop ? 'is-looping' : ''}" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
                                 <i class="fa-solid fa-repeat"></i>
                             </button>
                             <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" onclick="downloadAudio(this)">
@@ -781,12 +784,22 @@ listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesL
                 </div>
             `;
             fragment.appendChild(card);
-            
-            // إصلاح البطء القاتل: نربط الأحداث فقط للمشغل الفيدرالي الشغال حالياً لمنع تحميل الصوت لجميع الكروت في الخلفية بشكل متكرر
-            if (activePlayers[item.id]) {
-                setupAudioEvents(item.id);
+        });
+
+        container.appendChild(fragment);
+
+        // إعادة ربط الأحداث وتحديث أشرطة التقدم فوراً للأصوات التي لا تزال تعمل
+        Object.keys(activePlayers).forEach(id => {
+            if (document.getElementById(`progress-${id}`)) {
+                setupAudioEvents(id);
             }
         });
+    }
+            
+            // إصلاح البطء القاتل: نربط الأحداث فقط للمشغل الفيدرالي الشغال حالياً لمنع تحميل الصوت لجميع الكروت في الخلفية بشكل متكرر
+if (activePlayers[item.id]) {
+    setupAudioEvents(item.id);
+}
 
         container.appendChild(fragment);
     }
@@ -826,7 +839,7 @@ listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesL
         };
     }
 
-    function togglePlay(id, url) {
+function togglePlay(id, url) {
         const icon = document.getElementById(`icon-${id}`);
         
         if (!activePlayers[id]) {
@@ -836,6 +849,7 @@ listToRender = pool.filter(item => favoritesList.includes(item.id) || favoritesL
 
         const audio = activePlayers[id].audio;
 
+        // إيقاف أي صوت آخر يعمل الآن وتنظيف الواجهة الخاصة به لمنع استهلاك الذاكرة
         Object.keys(activePlayers).forEach(key => {
             if (key !== id && !activePlayers[key].audio.paused) {
                 activePlayers[key].audio.pause();
