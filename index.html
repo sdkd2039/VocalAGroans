@@ -702,8 +702,7 @@
             listToRender = [...randomAllAudio]; 
         } else if (currentTab === 'favorites') {
             let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
-listToRender = favoritesList.map(favId => pool.find(item => item.id === favId)).filter(Boolean);
-            listToRender = Array.from(uniqueFavs.values());
+listToRender = [...favoritesList].reverse().map(favId => pool.find(item => item.id === favId)).filter(Boolean);
         } else {
             listToRender = [...categoriesData[currentTab]];
         }
