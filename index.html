@@ -577,8 +577,15 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
+    // إنشاء معرف فريد متطابق وآمن استناداً لتشفير الرابط بالكامل لتجنب التكرار
     function generateCleanId(url) {
-        return 'audio-' + url.replace(/[^a-zA-Z0-9]/g, '').substr(-15);
+        let hash = 0;
+        for (let i = 0; i < url.length; i++) {
+            let char = url.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash |= 0;
+        }
+        return 'audio-' + Math.abs(hash);
     }
 
     function updateFavBadge() {
@@ -665,6 +672,7 @@
         renderAudioCards();
     }
 
+    // تبديل إضافة/حذف المفضلة مع الاستجابة الفورية
     function toggleFavorite(id) {
         if (favoritesList.includes(id)) {
             favoritesList = favoritesList.filter(favId => favId !== id);
@@ -675,19 +683,19 @@
         localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
         updateFavBadge();
         
-        const favBtn = document.querySelector(`[data-fav-id="${id}"]`);
-        if (favBtn) {
-            const isFav = favoritesList.includes(id);
-            favBtn.classList.toggle('is-fav', isFav);
-            
-            const iconEl = favBtn.querySelector('i');
-            if (iconEl) {
-                iconEl.className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-            }
-        }
-        
+        // إعادة رسم الكروت مباشرة إذا كنا في تبويب المفضلة أو تحديث الزر فقط
         if (currentTab === 'favorites') {
             renderAudioCards();
+        } else {
+            const favBtns = document.querySelectorAll(`[data-fav-id="${id}"]`);
+            const isFav = favoritesList.includes(id);
+            favBtns.forEach(btn => {
+                btn.classList.toggle('is-fav', isFav);
+                const iconEl = btn.querySelector('i');
+                if (iconEl) {
+                    iconEl.className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+                }
+            });
         }
     }
 
@@ -702,7 +710,7 @@
             listToRender = [...randomAllAudio]; 
         } else if (currentTab === 'favorites') {
             let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
-listToRender = [...favoritesList].reverse().map(favId => pool.find(item => item.id === favId)).filter(Boolean);
+            listToRender = [...favoritesList].reverse().map(favId => pool.find(item => item.id === favId)).filter(Boolean);
         } else {
             listToRender = [...categoriesData[currentTab]];
         }
