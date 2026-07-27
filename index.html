@@ -577,17 +577,20 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    // إنشاء معرف فريد متطابق وآمن استناداً لتشفير الرابط بالكامل لتجنب التكرار
+    // توليد معرف نظيف وثابت استناداً للرابط المنظف بدون مسافات أو رموز خاصة
     function generateCleanId(url) {
+        if (!url) return 'audio-' + Math.random().toString(36).substr(2, 9);
+        let cleaned = url.trim().toLowerCase();
         let hash = 0;
-        for (let i = 0; i < url.length; i++) {
-            let char = url.charCodeAt(i);
+        for (let i = 0; i < cleaned.length; i++) {
+            let char = cleaned.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash |= 0;
         }
         return 'audio-' + Math.abs(hash);
     }
 
+    // تحديث عداد المفضلة بشكل آمن
     function updateFavBadge() {
         const badge = document.getElementById('favBadge');
         if (badge) {
@@ -636,7 +639,7 @@
             ];
 
             let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.url, item));
+            pool.forEach(item => uniquePoolMap.set(item.id, item));
             let uniquePool = Array.from(uniquePoolMap.values());
 
             let shuffledPool = uniquePool.sort(() => Math.random() - 0.5);
@@ -663,7 +666,7 @@
                 ...categoriesData['صوت']
             ];
             let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.url, item));
+            pool.forEach(item => uniquePoolMap.set(item.id, item));
             let uniquePool = Array.from(uniquePoolMap.values());
             let shuffledPool = uniquePool.sort(() => Math.random() - 0.5);
             randomAllAudio = shuffledPool.slice(0, 6);
@@ -672,7 +675,7 @@
         renderAudioCards();
     }
 
-    // تبديل إضافة/حذف المفضلة مع الاستجابة الفورية
+    // إضافة أو حذف عنصر من المفضلة
     function toggleFavorite(id) {
         if (favoritesList.includes(id)) {
             favoritesList = favoritesList.filter(favId => favId !== id);
@@ -683,7 +686,6 @@
         localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
         updateFavBadge();
         
-        // إعادة رسم الكروت مباشرة إذا كنا في تبويب المفضلة أو تحديث الزر فقط
         if (currentTab === 'favorites') {
             renderAudioCards();
         } else {
@@ -710,7 +712,13 @@
             listToRender = [...randomAllAudio]; 
         } else if (currentTab === 'favorites') {
             let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
-            listToRender = [...favoritesList].reverse().map(favId => pool.find(item => item.id === favId)).filter(Boolean);
+            let uniquePoolMap = new Map();
+            pool.forEach(item => uniquePoolMap.set(item.id, item));
+            
+            listToRender = [...favoritesList]
+                .map(favId => uniquePoolMap.get(favId))
+                .filter(Boolean)
+                .reverse();
         } else {
             listToRender = [...categoriesData[currentTab]];
         }
