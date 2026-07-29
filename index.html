@@ -537,10 +537,9 @@
   OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
       appId: "fad2f372-1b1f-4593-803e-d56e9004630b",
-      // تحديد مسار المستودع بدقة ليتوافق مع إعدادات OneSignal الخاصة بك
       path: "/VocalAGroans/",
       notifyButton: {
-        enable: true, // تفعيل زر الجرس العائم للاشتراك في الإشعارات
+        enable: true,
         colors: {
           'circle.background': 'rgb(56, 189, 248)',
           'circle.foreground': 'white',
@@ -609,27 +608,9 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    // تسجيل الـ Service Worker لتفعيل خصائص PWA والتخزين المؤقت
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed: ', err));
-        });
-    }
-
-    // دالة طلب إذن الإشعارات
-    function requestNotificationPermission() {
-        if (!('Notification' in window)) {
-            alert('متصفحك لا يدعم الإشعارات.');
-            return;
-        }
-
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                alert('تم تفعيل الإشعارات بنجاح! ستصلك التحديثات.');
-                // هنا يمكنك لاحقاً ربط الـ Push Subscription مع خادمك إذا كنت تستخدم سيرفر خاص للإرسال
-            } else {
-                alert('تم رفض إذن الإشعارات.');
-            }
         });
     }
 
@@ -662,11 +643,15 @@
             const rows = json.table.rows; 
 
             return rows.map((row) => {
-                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
-                const url = row.c[1] ? row.c[1].v : ''; 
-                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
-                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
-                const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
+                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; // العمود A (العنوان)
+                const url = row.c[1] ? row.c[1].v : ''; // العمود B (رابط الصوت)
+                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; // العمود C (الوصف)
+                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : ''; // العمود D (تاريخ الإضافة التلقائي)
+                
+                // تعديل رابط التحميل ليأخذ القيمة من العمود E (الفهرس 4) كملف مضغوط اختياري، وإذا لم يوجد يستخدم رابط الصوت الأساسي (العمود B)
+                const zipUrl = row.c[4] && row.c[4].v ? row.c[4].v : '';
+                const downloadUrl = zipUrl !== '' ? zipUrl : url; 
+                
                 const uniqueId = generateCleanId(url);
                 
                 return { id: uniqueId, title, url, desc, dateAdded, downloadUrl, category: sheetName };
