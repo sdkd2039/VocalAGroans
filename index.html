@@ -13,6 +13,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>آهات صوتية</title>
+
+    <link rel="icon" type="image/png" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/1740499670247.png">
+
+    <!-- إعدادات تطبيق الويب PWA لأندرويد والهواتف الذكية -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="آهات صوتية">
+
+    <!-- أيقونات الآيفون والآيباد للشاشة الرئيسية -->
+    <link rel="apple-touch-icon" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/1740499670247.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/1740499670247.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/1740499670247.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/1740499670247.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -316,8 +330,6 @@
 
         .date-item i { font-size: 0.75rem; }
         .date-item.added i { color: var(--text-muted); }
-        .date-item.updated i { color: var(--primary-color); }
-        .date-item.updated span { color: var(--desc-text-color); font-weight: 500; }
 
         .player-controls-container {
             display: flex;
@@ -577,7 +589,13 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    // توليد معرف نظيف وثابت استناداً للرابط المنظف بدون مسافات أو رموز خاصة
+    // تسجيل الـ Service Worker لتفعيل خصائص PWA والتخزين المؤقت
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed: ', err));
+        });
+    }
+
     function generateCleanId(url) {
         if (!url) return 'audio-' + Math.random().toString(36).substr(2, 9);
         let cleaned = url.trim().toLowerCase();
@@ -590,7 +608,6 @@
         return 'audio-' + Math.abs(hash);
     }
 
-    // تحديث عداد المفضلة بشكل آمن
     function updateFavBadge() {
         const badge = document.getElementById('favBadge');
         if (badge) {
@@ -612,11 +629,11 @@
                 const url = row.c[1] ? row.c[1].v : ''; 
                 const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
                 const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
-                const dateUpdated = row.c[4] ? row.c[4].f || row.c[4].v : '';
+                // تم إزالة قراءة عمود E نهائياً من هنا
                 const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
                 const uniqueId = generateCleanId(url);
                 
-                return { id: uniqueId, title, url, desc, dateAdded, dateUpdated, downloadUrl, category: sheetName };
+                return { id: uniqueId, title, url, desc, dateAdded, downloadUrl, category: sheetName };
             }).filter(item => item.url !== '' && item.url.startsWith('http'));
         } catch (err) {
             console.error(`خطأ في ورقة: ${sheetName}`, err);
@@ -675,7 +692,6 @@
         renderAudioCards();
     }
 
-    // إضافة أو حذف عنصر من المفضلة
     function toggleFavorite(id) {
         if (favoritesList.includes(id)) {
             favoritesList = favoritesList.filter(favId => favId !== id);
@@ -749,15 +765,10 @@
             const playIconClass = isPlayingNow ? 'fa-solid fa-pause' : 'fa-solid fa-play';
 
             let datesHtml = '';
-            if (item.dateAdded || item.dateUpdated) {
-                datesHtml = `<div class="audio-dates-inline">`;
-                if (item.dateAdded) {
-                    datesHtml += `<div class="date-item added" title="تاريخ الإضافة"><i class="fa-regular fa-calendar"></i> <span>أضيف: ${item.dateAdded}</span></div>`;
-                }
-                if (item.dateUpdated) {
-                    datesHtml += `<div class="date-item updated" title="تاريخ التحديث"><i class="fa-solid fa-arrows-rotate"></i> <span>حدث: ${item.dateUpdated}</span></div>`;
-                }
-                datesHtml += `</div>`;
+            if (item.dateAdded) {
+                datesHtml = `<div class="audio-dates-inline">
+                    <div class="date-item added" title="تاريخ الإضافة"><i class="fa-regular fa-calendar"></i> <span>أضيف: ${item.dateAdded}</span></div>
+                </div>`;
             }
             
             card.innerHTML = `
