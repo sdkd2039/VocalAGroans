@@ -530,17 +530,6 @@
             .social-link.team-site img { width: 18px; height: 18px; }
         }
     </style>
-
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "fad2f372-1b1f-4593-803e-d56e9004630b",
-    });
-  });
-</script>
-    
 </head>
 <body oncontextmenu="return false;">
 
@@ -607,6 +596,23 @@
         });
     }
 
+    // دالة طلب إذن الإشعارات
+    function requestNotificationPermission() {
+        if (!('Notification' in window)) {
+            alert('متصفحك لا يدعم الإشعارات.');
+            return;
+        }
+
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                alert('تم تفعيل الإشعارات بنجاح! ستصلك التحديثات.');
+                // هنا يمكنك لاحقاً ربط الـ Push Subscription مع خادمك إذا كنت تستخدم سيرفر خاص للإرسال
+            } else {
+                alert('تم رفض إذن الإشعارات.');
+            }
+        });
+    }
+
     function generateCleanId(url) {
         if (!url) return 'audio-' + Math.random().toString(36).substr(2, 9);
         let cleaned = url.trim().toLowerCase();
@@ -640,7 +646,6 @@
                 const url = row.c[1] ? row.c[1].v : ''; 
                 const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
                 const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
-                // تم إزالة قراءة عمود E نهائياً من هنا
                 const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
                 const uniqueId = generateCleanId(url);
                 
