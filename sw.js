@@ -1,3 +1,6 @@
+// 1. استيراد سكريبت OneSignal الرسمي ليعمل في نفس السيرفيس وركر
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+
 const CACHE_NAME = 'vocal-groans-v1';
 const assetsToCache = [
   './index.html',
@@ -50,19 +53,41 @@ self.addEventListener('push', event => {
   if (event.data) {
     try {
       const payload = event.data.json();
-      
-      // استخراج العنوان والوصف وسحب بيانات OneSignal بشكل صحيح
+
+      // قراءة العنوان من OneSignal أو البيانات العادية
       if (payload.title) title = payload.title;
-      if (payload.body) body = payload.body;
-      if (payload.custom && payload.custom.a && payload.custom.a.body) {
-        body = payload.custom.a.body;
+      else if (payload.heading) title = payload.heading;
+      else if (payload.custom && payload.custom.a && payload.custom.a.title) title = payload.custom.a.title;
+
+      // قراءة الوصف من جميع هياكل OneSignal الممكنة
+      if (payload.body) {
+        body = payload.body;
       } else if (payload.alert) {
         body = payload.alert;
+      } else if (payload.custom && payload.custom.a && payload.custom.a.body) {
+        body = payload.custom.a.body;
+      } else if (payload.custom && payload.custom.a && payload.custom.a.alert) {
+        body = payload.custom.a.alert;
+      } else if (payload.custom && payload.custom.a && payload.custom.a.message) {
+        body = payload.custom.a.message;
+      } else if (payload.additionalData && payload.additionalData.body) {
+        body = payload.additionalData.body;
       }
+
+      // قراءة الأيقونة
       if (payload.icon) icon = payload.icon;
+      else if (payload.custom && payload.custom.a && payload.custom.a.icon) icon = payload.custom.a.icon;
+
     } catch (e) {
-      body = event.data.text();
+      if (event.data.text()) {
+        body = event.data.text();
+      }
     }
+  }
+
+  // الضمان النهائي لخروج وصف دائمًا
+  if (!body || body.trim() === '') {
+    body = 'يوجد محتوى جديد بانتظارك!';
   }
 
   const options = {
@@ -73,6 +98,7 @@ self.addEventListener('push', event => {
     vibrate: [200, 100, 200]
   };
 
+  // التأكد من عدم تكرار الإشعار إن قامت مكتبة OneSignal بعرضه تلقائيًا
   event.waitUntil(
     self.registration.showNotification(title, options)
   );
