@@ -14,10 +14,10 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// تفعيل الخدمة وحذف الكاش القديم إن وجد
+// تفعيل الخدمة وحذف الكاش القديم
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().keys ? caches.keys().then(keys => {
+    caches.keys().then(keys => {
       return Promise.all(
         keys.map(key => {
           if (key !== CACHE_NAME) {
@@ -25,7 +25,7 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    }) : null
+    })
   );
   self.clients.claim();
 });
@@ -36,33 +36,45 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(response => {
       return response || fetch(event.request);
     }).catch(() => {
-      // يمكن توفير صفحة بديلة في حال انقطاع الإنترنت تماماً
+      // التعامل مع حالة أوفلاين
     })
   );
 });
 
 // استقبال وإظهار الإشعارات الفعلية (Push Notifications)
 self.addEventListener('push', event => {
-  let data = { title: 'آهات صوتية', body: 'يوجد محتوى صوتي جديد بانتظارك!', icon: 'https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png' };
-  
+  let title = 'آهات صوتية';
+  let body = 'يوجد محتوى صوتي جديد بانتظارك!';
+  let icon = 'https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png';
+
   if (event.data) {
     try {
-      data = event.data.json();
+      const payload = event.data.json();
+      
+      // استخراج العنوان والوصف وسحب بيانات OneSignal بشكل صحيح
+      if (payload.title) title = payload.title;
+      if (payload.body) body = payload.body;
+      if (payload.custom && payload.custom.a && payload.custom.a.body) {
+        body = payload.custom.a.body;
+      } else if (payload.alert) {
+        body = payload.alert;
+      }
+      if (payload.icon) icon = payload.icon;
     } catch (e) {
-      data.body = event.data.text();
+      body = event.data.text();
     }
   }
 
   const options = {
-    body: data.body,
-    icon: data.icon,
-    badge: data.icon,
+    body: body,
+    icon: icon,
+    badge: icon,
     dir: 'rtl',
     vibrate: [200, 100, 200]
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    self.registration.showNotification(title, options)
   );
 });
 
