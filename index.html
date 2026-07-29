@@ -530,6 +530,26 @@
             .social-link.team-site img { width: 18px; height: 18px; }
         }
     </style>
+
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "fad2f372-1b1f-4593-803e-d56e9004630b",
+      // تحديد مسار المستودع بدقة ليتوافق مع إعدادات OneSignal الخاصة بك
+      path: "/VocalAGroans/",
+      notifyButton: {
+        enable: true, // تفعيل زر الجرس العائم للاشتراك في الإشعارات
+        colors: {
+          'circle.background': 'rgb(56, 189, 248)',
+          'circle.foreground': 'white',
+        }
+      }
+    });
+  });
+</script>
+    
 </head>
 <body oncontextmenu="return false;">
 
