@@ -10,7 +10,7 @@ const ASSETS_TO_CACHE = [
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 
-// Install Event - تثبيت الخدمة وتخزين الملفات
+// تثبيت الخدمة وحفظ الملفات الأساسية
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -20,7 +20,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate Event - تفعيل الخدمة وحذف الكاش القديم
+// تفعيل الخدمة وتنظيف الكاش القديم
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -36,11 +36,11 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch Event - جلب الملفات وتجاوز طلبات OneSignal لمنع التعارض
+// جلب البيانات واستثناء OneSignal لمنع التعارض
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
 
-  // استثناء طلبات OneSignal من التخزين المؤقت لتتلقى الإشعارات بدون مشاكل
+  // السماح لـ OneSignal بمعالجة إشعاراته بدون اعتراض الكاش
   if (
     requestUrl.hostname.includes('onesignal.com') ||
     requestUrl.pathname.includes('OneSignalSDKWorker.js')
