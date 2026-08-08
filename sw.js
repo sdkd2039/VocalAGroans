@@ -1,7 +1,7 @@
 // sw.js - Service Worker with Custom Notification Icon & OneSignal
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
-const CACHE_NAME = 'vocal-groans-v3';
+const CACHE_NAME = 'vocal-groans-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -53,22 +53,21 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// معالج الإشعارات لفرض ظهور الشعار الخاص بك بشكل دقيق ودائري
+// معالج الإشعارات باستخدام رابط الشعار المباشر من جيت هاب
 self.addEventListener('push', (event) => {
   if (!event.data) return;
+
+  const customIcon = 'https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png';
 
   try {
     const data = event.data.json();
     const title = data.title || data.heading || 'آهات صوتية';
     const body = data.body || data.alert || 'يوجد محتوى صوتي جديد بانتظارك!';
-    
-    // رابط الشعار الخاص بك المفضل
-    const customIcon = 'https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png';
 
     const options = {
       body: body,
       icon: customIcon,
-      badge: customIcon, // الأيقونة الصغيرة في شريط الحالة
+      badge: customIcon,
       dir: 'rtl',
       vibrate: [200, 100, 200]
     };
@@ -77,10 +76,8 @@ self.addEventListener('push', (event) => {
       self.registration.showNotification(title, options)
     );
   } catch (e) {
-    // في حال كانت البيانات نصية بحتة
     const textBody = event.data.text();
-    const customIcon = 'https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png';
-    
+
     event.waitUntil(
       self.registration.showNotification('آهات صوتية', {
         body: textBody,
