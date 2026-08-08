@@ -1,4 +1,4 @@
-// sw.js - Service Worker with Custom Notification Icon & OneSignal
+// sw.js - Service Worker with OneSignal
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 const CACHE_NAME = 'vocal-groans-v4';
@@ -49,59 +49,6 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       return fetch(event.request);
-    })
-  );
-});
-
-// معالج الإشعارات باستخدام رابط الشعار المباشر من جيت هاب
-self.addEventListener('push', (event) => {
-  if (!event.data) return;
-
-  const customIcon = 'https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png';
-
-  try {
-    const data = event.data.json();
-    const title = data.title || data.heading || 'آهات صوتية';
-    const body = data.body || data.alert || 'يوجد محتوى صوتي جديد بانتظارك!';
-
-    const options = {
-      body: body,
-      icon: customIcon,
-      badge: customIcon,
-      dir: 'rtl',
-      vibrate: [200, 100, 200]
-    };
-
-    event.waitUntil(
-      self.registration.showNotification(title, options)
-    );
-  } catch (e) {
-    const textBody = event.data.text();
-
-    event.waitUntil(
-      self.registration.showNotification('آهات صوتية', {
-        body: textBody,
-        icon: customIcon,
-        badge: customIcon,
-        dir: 'rtl'
-      })
-    );
-  }
-});
-
-// التفاعل عند النقر على الإشعار
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
-      for (let client of windowClients) {
-        if ('focus' in client) {
-          return client.focus();
-        }
-      }
-      if (clients.openWindow) {
-        return clients.openWindow('./index.html');
-      }
     })
   );
 });
