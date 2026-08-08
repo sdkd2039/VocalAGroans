@@ -240,14 +240,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 15px;
+            gap: 12px;
             width: 100%;
         }
 
         .audio-layout-top {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .audio-main-content {
@@ -289,7 +289,8 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            height: 2.8em;
+            min-height: 1.4em;
+            max-height: 2.8em;
         }
 
         .audio-desc-container {
@@ -318,7 +319,7 @@
             padding-right: 58px;
             font-size: 0.72rem;
             color: var(--text-muted);
-            margin-top: -2px;
+            margin-top: 0px;
         }
 
         .date-item {
@@ -751,24 +752,14 @@
         const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
         const message = `استمع إلى المؤثر الصوتي: ${title}\n${siteAudioUrl}`;
 
-        const shareData = {
-            title: 'آهات صوتية',
-            text: `استمع إلى المؤثر الصوتي: ${title}`,
-            url: siteAudioUrl
-        };
-
-        if (navigator.share) {
-            navigator.share(shareData).catch(() => {});
-        } else {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(message).then(() => {
-                    alert("تم نسخ الرابط بنجاح!");
-                }).catch(() => {
-                    fallbackCopyText(message);
-                });
-            } else {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(message).then(() => {
+                alert("تم نسخ الموعد بنجاح!");
+            }).catch(() => {
                 fallbackCopyText(message);
-            }
+            });
+        } else {
+            fallbackCopyText(message);
         }
     }
 
@@ -900,7 +891,7 @@
                             <i class="${playIconClass}" id="icon-${item.id}"></i>
                         </button>
                         <div class="control-left-group">
-                            <button class="control-btn btn-share-action" title="مشاركة أو نسخ رابط الموقع للصوت" onclick="shareAudio('${safeTitle}', '${item.id}')">
+                            <button class="control-btn btn-share-action" title="نسخ رابط الموقع والصوت" onclick="shareAudio('${safeTitle}', '${item.id}')">
                                 <i class="fa-solid fa-share-nodes"></i>
                             </button>
                             <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
