@@ -1,60 +1,32 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMR1NXR7PC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-KMR1NXR7PC');
-    </script>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>آهات صوتية</title>
-
-    <meta property="og:title" content="آهات صوتية - سمعك بلا ضجيج">
-    <meta property="og:description" content="تصفح واستمع إلى أجمل الآهات والمؤثرات الصوتية الخالية من الموسيقى.">
-    <meta property="og:image" content="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png">
-    <meta property="og:url" content="https://sdkd2039.github.io/VocalAGroans/">
-
-    <link rel="icon" type="image/png" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png">
-
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0b0f19">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="آهات صوتية">
-
-    <link rel="apple-touch-icon" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشغل صوتي مرن - دراما المجد</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131926;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
             --text-color: #f8fafc;
-            --primary-color: #38bdf8;
-            --primary-hover: #0ea5e9;
-            --text-muted: #64748b;
-            --player-bg: #1a2333;
-            --success-color: #10b981;
-            --success-hover: #059669;
-            --desc-text-color: #94a3b8;
-            --warning-color: #e67e22;
-            --favorite-color: #ef4444;
+            --primary-color: #0284c7;
+            --primary-hover: #0369a1;
+            --text-muted: #94a3b8;
+            --accent-gold: #ffd700;
+            --player-bg: #151f32;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Estedad', 'Noto Kufi Arabic', sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
 
         body {
@@ -62,343 +34,134 @@
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 30px 15px 40px 15px;
+            padding: 20px;
         }
 
-        /* تصميم شاشة الترحيب المتحركة (مع التبديل التلقائي حسب الجهاز) */
-        #splashScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .page-container {
             width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
+            max-width: 700px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-            overflow: hidden;
+            gap: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
         }
 
-        .splash-logo {
+        .top-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .meta-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-align: right;
+        }
+
+        .poster-container {
+            width: 90px;
+            height: 90px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .poster-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0;
-            filter: none;
         }
 
-        /* التحكم بعرض صورة الجوال أو الكمبيوتر بناءً على مساحة الشاشة */
-        .splash-mobile {
-            display: block;
-        }
-        .splash-desktop {
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .splash-mobile {
-                display: none;
-            }
-            .splash-desktop {
-                display: block;
-            }
-        }
-
-        .container {
-            width: 100%;
-            max-width: 850px;
-            flex: 1;
+        .track-info {
             display: flex;
             flex-direction: column;
-            align-items: center;
-        }
-
-        .boxed-header-container {
-            width: 100%;
-            height: 280px;
-            background-image: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.75)), url('https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/rmqg5t.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: 24px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
         }
 
-        .header-main-logo {
-            max-width: 140px;
-            height: auto;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
-            pointer-events: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        .slogan {
-            font-size: 1.25rem;
-            font-weight: 700;
+        .track-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 6px;
             color: #fff;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
         }
 
-        .warning {
-            color: #ff4d4d;
-            background: rgba(11, 15, 25, 0.8);
-            padding: 6px 18px;
-            border-radius: 50px;
-            display: inline-block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 77, 77, 0.25);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .tabs-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-            padding: 0 5px;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            border: 1px solid #1e293b;
-            color: var(--text-muted);
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-        }
-
-        .tab-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--text-color);
-        }
-
-        .tab-btn.active {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            border-color: var(--primary-color);
-        }
-
-        .tab-btn i {
+        .track-channel {
             font-size: 0.95rem;
-        }
-
-        .fav-badge {
-            background-color: var(--favorite-color);
-            color: #ffffff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 50px;
-            min-width: 18px;
-            height: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--card-bg);
-            transition: all 0.2s ease;
-        }
-        
-        .tab-btn.active .fav-badge {
-            border-color: var(--primary-color);
-        }
-
-        .search-container {
-            position: relative;
-            margin-bottom: 25px;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid #1e293b;
-            border-radius: 14px;
-            padding: 15px 45px 15px 15px;
-            color: var(--text-color);
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        .search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        .audio-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            width: 100%;
-        }
-
-        .audio-card {
-            background: var(--card-bg);
-            border: 1px solid #1e293b;
-            border-radius: 18px;
-            padding: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .audio-layout-top {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .audio-main-content {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-
-        .music-note-icon {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.15);
-            color: var(--primary-color);
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .audio-info-block {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .audio-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-height: 1.4em;
-            max-height: 2.8em;
-        }
-
-        .audio-desc-container {
-            font-size: 0.8rem;
-            font-style: normal;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-top: 2px;
-        }
-
-        .desc-label {
             color: var(--primary-color);
             font-weight: 700;
-            margin-left: 4px;
-        }
-
-        .desc-value {
-            color: var(--desc-text-color);
-        }
-
-        .audio-dates-inline {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding-right: 58px;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-top: 0px;
-        }
-
-        .date-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 3px 8px;
+            gap: 8px;
+        }
+
+        .btn-download-special {
+            padding: 8px 18px;
+            height: 40px;
             border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: #10b981;
+            color: #ffffff;
+            font-size: 1.15rem;
+            border: 1px solid #047857;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .btn-download-special:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .btn-download-special:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .btn-download-special.loading-dl {
+            background: #d97706;
+            border-color: #b45309;
+            color: #fff;
         }
 
-        .date-item i { font-size: 0.75rem; }
-        .date-item.added i { color: var(--text-muted); }
-
-        .player-controls-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .audio-player {
             background: var(--player-bg);
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.01);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.03);
+            width: 100%;
         }
 
-        .timeline-container {
+        .progress-container {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            margin-bottom: 15px;
         }
 
         .timeline {
             width: 100%;
             height: 6px;
-            background: #2e3d52;
+            background: #334155;
             border-radius: 10px;
             cursor: pointer;
             position: relative;
+            transition: height 0.1s ease;
+        }
+        
+        .timeline:hover {
+            height: 8px;
         }
 
         .progress-bar {
@@ -409,25 +172,21 @@
             position: relative;
         }
 
-        .time-labels {
+        .time-stamps {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
+            margin-top: 8px;
             font-weight: 500;
         }
 
-        .buttons-row {
+        .player-controls {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+            position: relative;
             width: 100%;
-        }
-
-        .control-left-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .control-btn {
@@ -441,712 +200,387 @@
             transition: all 0.2s ease;
         }
 
-        .btn-play-pause {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(56, 189, 248, 0.1);
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            font-size: 0.95rem;
+        .speed-wrapper {
+            position: relative;
         }
 
-        .btn-play-pause:hover {
+        .btn-speed {
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.06);
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            width: 60px;
+        }
+        .btn-speed.active-speed {
+            color: var(--accent-gold);
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .center-playback-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-skip {
+            font-size: 1.35rem;
+            color: var(--text-muted);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+        }
+        .btn-skip:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-play-pause {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
             background: var(--primary-color);
-            color: var(--bg-color);
+            color: #fff;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+        }
+        .btn-play-pause:hover {
+            background: var(--primary-hover);
             transform: scale(1.05);
         }
 
-        .btn-loop-toggle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            width: 32px;
-            height: 32px;
-        }
-        .btn-loop-toggle:hover { transform: scale(1.1); }
-        .btn-loop-toggle.is-looping { color: var(--primary-color); }
-
-        .btn-fav-toggle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            width: 32px;
-            height: 32px;
-        }
-        .btn-fav-toggle:hover { transform: scale(1.1); }
-        .btn-fav-toggle.is-fav { color: var(--favorite-color); }
-
-        .btn-share-action {
-            font-size: 1rem;
-            color: var(--text-muted);
-            width: 32px;
-            height: 32px;
-        }
-        .btn-share-action:hover { color: var(--primary-color); transform: scale(1.1); }
-
-        .btn-download-action {
+        .btn-loop {
             width: 38px;
             height: 38px;
-            border-radius: 10px;
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            color: var(--primary-color);
-            font-size: 1rem;
-        }
-        .btn-download-action:hover {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            border-color: var(--primary-color);
-        }
-
-        .status-message {
-            grid-column: span 2;
-            text-align: center;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
             color: var(--text-muted);
-            padding: 40px 20px;
-            font-size: 0.9rem;
+        }
+        .btn-loop.active-loop {
+            color: #0ea5e9;
+            background: rgba(14, 165, 233, 0.1);
+            border-color: rgba(14, 165, 233, 0.2);
         }
 
-        .footer {
-            margin-top: 60px;
-            width: 100%;
-            max-width: 850px;
-            text-align: center;
-            border-top: 1px solid #1e293b;
-            padding-top: 25px;
+        .speed-menu {
+            display: none;
+            position: absolute;
+            bottom: 45px;
+            right: 0;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            z-index: 10;
+            flex-direction: column;
+            gap: 2px;
         }
-
-        .footer-rights {
-            font-size: 0.95rem;
+        .speed-option {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            padding: 6px 14px;
+            font-size: 0.85rem;
             font-weight: 700;
-            color: #f8fafc;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            width: 65px;
+        }
+        .speed-option:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+        .speed-option.selected {
+            background: rgba(2, 132, 199, 0.2);
+            color: var(--primary-color);
         }
 
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            flex-wrap: nowrap;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .social-link {
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(19, 25, 38, 0.6);
-            padding: 8px 18px;
-            border-radius: 10px;
-            border: 1px solid #1e293b;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .social-link.tg { color: #38bdf8; }
-        .social-link.tg:hover { border-color: #38bdf8; }
-        .social-link.ig { color: #f43f5e; }
-        .social-link.ig:hover { border-color: #f43f5e; }
-        
-        .social-link.team-site { 
-            color: #ffffff; 
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-        .social-link.team-site:hover { border-color: rgba(255, 255, 255, 0.4); }
-        .social-link.team-site img {
-            width: 25px; 
-            height: 25px;
-            object-fit: contain;
-        }
-
-        @media (max-width: 650px) {
-            body { padding: 15px 12px 30px 12px; }
-            .boxed-header-container { height: 210px; border-radius: 16px; margin-bottom: 20px; width: 100%; }
-            .header-main-logo { max-width: 100px; }
-            .slogan { font-size: 1.05rem; }
-            .warning { font-size: 0.75rem; padding: 4px 14px; }
-            .tabs-container { gap: 6px; justify-content: center; margin-bottom: 15px; }
-            .tab-btn { padding: 8px 14px; font-size: 0.8rem; border-radius: 10px; gap: 5px; }
-            .search-container { margin-bottom: 20px; width: 100%; }
-            .audio-list { grid-template-columns: 1fr; gap: 14px; width: 100%; }
-            .status-message { grid-column: span 1; }
-            .audio-dates-inline { padding-right: 0; }
-
-            .footer-socials { gap: 8px; }
-            .social-link { padding: 8px 6px; font-size: 0.78rem; gap: 4px; }
-            .social-link.team-site img { width: 18px; height: 18px; }
+        @media (max-width: 540px) {
+            .page-container {
+                padding: 20px;
+                gap: 20px;
+            }
+            .top-meta-bar {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 15px;
+            }
+            .meta-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .track-info {
+                align-items: center;
+            }
+            .track-title {
+                font-size: 1.4rem;
+            }
+            .audio-player {
+                padding: 15px;
+            }
+            .center-playback-group {
+                gap: 12px;
+            }
         }
     </style>
-
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "fad2f372-1b1f-4593-803e-d56e9004630b",
-      path: "/VocalAGroans/",
-      notifyButton: {
-        enable: true,
-        colors: {
-          'circle.background': 'rgb(56, 189, 248)',
-          'circle.foreground': 'white',
-        }
-      }
-    });
-  });
-</script>
-    
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-<!-- شاشة الترحيب (تخصص رابط الجوال ورابط الكمبيوتر تلقائياً وبمدة 5 ثواني) -->
-<div id="splashScreen">
-    <img src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/Video.Guru__-ezgif.com-video-to-gif-converter.gif" alt="شعار آهات صوتية المتحرك للجوال" class="splash-logo splash-mobile" ondragstart="return false;">
-    <img src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/Video.Guru__-ezgif.com-video-to-gif-converter%20(2).gif" alt="شعار آهات صوتية المتحرك للكمبيوتر" class="splash-logo splash-desktop" ondragstart="return false;">
-</div>
-
-<div class="container">
-    <div class="boxed-header-container" ondragstart="return false;">
-        <img src="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401783227614594.png" alt="شعار آهات صوتية الأساسي" class="header-main-logo">
-        <div class="slogan">سمعك بلا ضجيج</div>
-        <div class="warning">جميع الملفات الصوتية خالية من الموسيقى 🚫</div>
-    </div>
-
-    <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('all', this)"><i class="fa-solid fa-bolt"></i> اقتراحات لك</button>
-        <button class="tab-btn" onclick="switchTab('آهات', this)"><i class="fa-solid fa-music"></i> آهات</button>
-        <button class="tab-btn" onclick="switchTab('مؤثرات', this)"><i class="fa-solid fa-wand-magic-sparkles"></i> مؤثرات</button>
-        <button class="tab-btn" onclick="switchTab('انتقالات', this)"><i class="fa-solid fa-arrow-right-arrow-left"></i> انتقالات</button>
-        <button class="tab-btn" onclick="switchTab('صوت', this)"><i class="fa-solid fa-microphone"></i> صوت</button>
-        <button class="tab-btn" onclick="switchTab('favorites', this)">
-            <i class="fa-solid fa-heart"></i> المفضلة 
-            <span id="favBadge" class="fav-badge">0</span>
-        </button>
-    </div>
-
-    <div class="search-container">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن مؤثرات، انتقالات، أو آهات..." oninput="filterAndSearchAudio()">
-    </div>
-
-    <div id="audioContainer" class="audio-list">
-        <div class="status-message" id="statusMessage"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب البيانات...</div>
-    </div>
-</div>
-
-<footer class="footer">
-    <div class="footer-rights">
-        جميع الحقوق محفوظة ©<br>
-        1448 هـ - 2026 م
-    </div>
-    <div class="footer-socials">
-        <a href="https://t.me/VocalAGroans" target="_blank" class="social-link tg">
-            <i class="fa-brands fa-telegram"></i> تليجرام
-        </a>
-        <a href="https://sites.google.com/view/almajdsolah/Home" target="_blank" class="social-link team-site">
-            <img src="https://files.catbox.moe/piew3s.png" alt="شعار موقع الفريق" ondragstart="return false;"> موقع الفريق
-        </a>
-        <a href="https://www.instagram.com/vocalagroans" target="_blank" class="social-link ig">
-            <i class="fa-brands fa-instagram"></i> انستقرام
-        </a>
-    </div>
-</footer>
-
-<script>
-    const sheetId = '1mvsDJJRJuiDg1s45KwJw7x6dnodiPZck8WNAFz_C8tU';
-    
-    let categoriesData = { 'آهات': [], 'مؤثرات': [], 'انتقالات': [], 'صوت': [] };
-    let randomAllAudio = []; 
-    let activePlayers = {};
-    let currentTab = 'all'; 
-    let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
-
-    // ضبط مدة عرض شاشة الترحيب لتصبح 5 ثواني تماماً
-    window.addEventListener('load', () => {
-        const splash = document.getElementById('splashScreen');
-        if (splash) {
-            setTimeout(() => {
-                splash.style.opacity = '0';
-                setTimeout(() => splash.remove(), 600);
-            }, 5000);
-        }
-    });
-
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed: ', err));
-        });
-    }
-
-    function generateCleanId(url) {
-        if (!url) return 'audio-' + Math.random().toString(36).substr(2, 9);
-        let cleaned = url.trim().toLowerCase();
-        let hash = 0;
-        for (let i = 0; i < cleaned.length; i++) {
-            let char = cleaned.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash |= 0;
-        }
-        return 'audio-' + Math.abs(hash);
-    }
-
-    function updateFavBadge() {
-        const badge = document.getElementById('favBadge');
-        if (badge) {
-            badge.textContent = favoritesList.length;
-            badge.style.display = favoritesList.length === 0 ? 'none' : 'inline-flex';
-        }
-    }
-
-    async function fetchSheetData(sheetName) {
-        try {
-            const queryUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${encodeURIComponent(sheetName)}&tqx=out:json&headers=0&cacheBust=${Date.now()}`;
-            const res = await fetch(queryUrl);
-            const text = await res.text();
-            const json = JSON.parse(text.substr(47).slice(0, -2));
-            const rows = json.table.rows; 
-
-            return rows.map((row) => {
-                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
-                const url = row.c[1] ? row.c[1].v : ''; 
-                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
-                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
-                const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
-                const uniqueId = generateCleanId(url);
+    <div class="page-container">
+        
+        <div class="top-meta-bar">
+            <div class="meta-container">
+                <div class="poster-container">
+                    <img src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%AF%D8%B1%D8%A7%D9%85%D8%A7%20%D8%A7%D9%84%D9%85%D8%AC%D8%AF/%D8%B5%D9%88%D8%B1/jn484u.png" alt="بوستر مربع 1:1">
+                </div>
                 
-                return { id: uniqueId, title, url, desc, dateAdded, downloadUrl, category: sheetName };
-            }).filter(item => item.url !== '' && item.url.startsWith('http'));
-        } catch (err) {
-            console.error(`خطأ في ورقة: ${sheetName}`, err);
-            return [];
-        }
-    }
+                <div class="track-info">
+                    <h2 class="track-title">كتالوج 3</h2>
+                    <div class="track-channel">
+                        <i class="fa-solid fa-tv"></i>
+                        <span>قناة ماسة</span>
+                    </div>
+                </div>
+            </div>
 
-    async function fetchAllSheetsData() {
-        try {
-            categoriesData['آهات'] = (await fetchSheetData('آهات')).reverse();
-            categoriesData['مؤثرات'] = (await fetchSheetData('مؤثرات')).reverse();
-            categoriesData['انتقالات'] = (await fetchSheetData('انتقالات')).reverse();
-            categoriesData['صوت'] = (await fetchSheetData('صوت')).reverse();
+            <button class="control-btn btn-download-special" id="downloadBtn" title="تحميل الشارة">
+                <i class="fa-solid fa-cloud-arrow-down" id="dlIcon"></i>
+            </button>
+        </div>
 
-            let pool = [
-                ...categoriesData['آهات'],
-                ...categoriesData['مؤثرات'],
-                ...categoriesData['انتقالات'],
-                ...categoriesData['صوت']
-            ];
+        <audio id="mainAudio" src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%AF%D8%B1%D8%A7%D9%85%D8%A7%20%D8%A7%D9%84%D9%85%D8%AC%D8%AF/%D8%B5%D9%88%D8%AA/%D9%83%D8%AA%D8%A7%D9%84%D9%88%D8%AC%203.mp3" preload="metadata"></audio>
 
-            let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.id, item));
-            let uniquePool = Array.from(uniquePoolMap.values());
+        <div class="audio-player">
+            <div class="progress-container">
+                <div class="timeline" id="timeline">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="time-stamps">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
 
-            let shuffledPool = uniquePool.sort(() => Math.random() - 0.5);
-            randomAllAudio = shuffledPool.slice(0, 6);
+            <div class="player-controls">
+                
+                <div class="speed-wrapper">
+                    <button class="control-btn btn-speed" id="speedBtn">1.0x</button>
+                    <div class="speed-menu" id="speedMenu">
+                        <button class="speed-option" data-speed="0.5">0.5x</button>
+                        <button class="speed-option" data-speed="0.75">0.75x</button>
+                        <button class="speed-option selected" data-speed="1.0">1.0x</button>
+                        <button class="speed-option" data-speed="1.25">1.25x</button>
+                        <button class="speed-option" data-speed="1.5">1.5x</button>
+                        <button class="speed-option" data-speed="2.0">2.0x</button>
+                    </div>
+                </div>
+                
+                <div class="center-playback-group">
+                    <button class="control-btn btn-skip" id="rewindBtn" title="تأخير 10 ثوانٍ">
+                        <i class="fa-solid fa-forward-fast"></i>
+                    </button>
 
-            updateFavBadge();
-            renderAudioCards();
-            checkUrlHashForAudio(uniquePool);
-        } catch (err) {
-            document.getElementById('statusMessage').innerHTML = 'حدث خطأ أثناء تحميل الملفات الصوتية.';
-            console.error(err);
-        }
-    }
+                    <button class="control-btn btn-play-pause" id="playPauseBtn">
+                        <i class="fa-solid fa-play" id="playIcon"></i>
+                    </button>
 
-    function switchTab(tabName, buttonEl) {
-        currentTab = tabName;
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        buttonEl.classList.add('active');
+                    <button class="control-btn btn-skip" id="forwardBtn" title="تقديم 10 ثوانٍ">
+                        <i class="fa-solid fa-backward-fast"></i>
+                    </button>
+                </div>
 
-        if (tabName === 'all') {
-            let pool = [
-                ...categoriesData['آهات'],
-                ...categoriesData['مؤثرات'],
-                ...categoriesData['انتقالات'],
-                ...categoriesData['صوت']
-            ];
-            let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.id, item));
-            let uniquePool = Array.from(uniquePoolMap.values());
-            let shuffledPool = uniquePool.sort(() => Math.random() - 0.5);
-            randomAllAudio = shuffledPool.slice(0, 6);
-        }
+                <button class="control-btn btn-loop" id="loopBtn" title="تكرار تلقائي">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
 
-        renderAudioCards();
-    }
+            </div>
+        </div>
+    </div>
 
-    function toggleFavorite(id) {
-        if (favoritesList.includes(id)) {
-            favoritesList = favoritesList.filter(favId => favId !== id);
-        } else {
-            favoritesList.push(id);
-        }
-        
-        localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
-        updateFavBadge();
-        
-        if (currentTab === 'favorites') {
-            renderAudioCards();
-        } else {
-            const favBtns = document.querySelectorAll(`[data-fav-id="${id}"]`);
-            const isFav = favoritesList.includes(id);
-            favBtns.forEach(btn => {
-                btn.classList.toggle('is-fav', isFav);
-                const iconEl = btn.querySelector('i');
-                if (iconEl) {
-                    iconEl.className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-                }
-            });
-        }
-    }
+    <script>
+        const audio = document.getElementById('mainAudio');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const timeline = document.getElementById('timeline');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeLabel = document.getElementById('currentTime');
+        const durationLabel = document.getElementById('duration');
+        const speedBtn = document.getElementById('speedBtn');
+        const speedMenu = document.getElementById('speedMenu');
+        const speedOptions = document.querySelectorAll('.speed-option');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const dlIcon = document.getElementById('dlIcon');
+        const loopBtn = document.getElementById('loopBtn');
+        const forwardBtn = document.getElementById('forwardBtn');
+        const rewindBtn = document.getElementById('rewindBtn');
 
-    function shareAudio(title, audioId) {
-        const baseUrl = window.location.href.split('#')[0].split('?')[0];
-        const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
-        const message = `استمع إلى هذه الصوتية: ${title}\n${siteAudioUrl}`;
+        const audioUrl = "https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%AF%D8%B1%D8%A7%D9%85%D8%A7%20%D8%A7%D9%84%D9%85%D8%AC%D8%AF/%D8%B5%D9%88%D8%AA/%D9%83%D8%AA%D8%A7%D9%84%D9%88%D8%AC%203.mp3";
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(message).then(() => {
-                alert("تم نسخ الرابط بنجاح!");
-            }).catch(() => {
-                fallbackCopyText(message);
-            });
-        } else {
-            fallbackCopyText(message);
-        }
-    }
-
-    function fallbackCopyText(text) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            alert("تم نسخ الرابط بنجاح!");
-        } catch (err) {
-            alert("تعذر النسخ التلقائي، يرجى تحديده يدوياً.");
-        }
-        document.body.removeChild(textArea);
-    }
-
-    function checkUrlHashForAudio(allPool) {
-        const hash = window.location.hash;
-        if (hash && hash.includes('audio=')) {
-            const targetId = hash.split('audio=')[1];
-            const targetItem = allPool.find(item => item.id === targetId);
-            
-            if (targetItem) {
-                let targetCategory = targetItem.category;
-                const tabButton = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.includes(targetCategory));
-                if (tabButton) {
-                    switchTab(targetCategory, tabButton);
-                }
-
-                setTimeout(() => {
-                    const cardElement = document.getElementById(`card-${targetId}`);
-                    if (cardElement) {
-                        cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        cardElement.style.border = '2px solid var(--primary-color)';
-                        setTimeout(() => {
-                            togglePlay(targetItem.id, targetItem.url);
-                        }, 500);
-                    }
-                }, 300);
-            }
-        }
-    }
-
-    function renderAudioCards() {
-        const container = document.getElementById('audioContainer');
-        container.innerHTML = '';
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-
-        let listToRender = [];
-
-        if (currentTab === 'all') {
-            listToRender = [...randomAllAudio]; 
-        } else if (currentTab === 'favorites') {
-            let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
-            let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.id, item));
-            
-            listToRender = [...favoritesList]
-                .map(favId => uniquePoolMap.get(favId))
-                .filter(Boolean)
-                .reverse();
-        } else {
-            listToRender = [...categoriesData[currentTab]];
-        }
-
-        let filtered = listToRender.filter(item => {
-            return item.title.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm);
-        });
-
-        if (filtered.length === 0) {
-            if (currentTab === 'favorites') {
-                container.innerHTML = `<div class="status-message">قائمة المفضلة فارغة حالياً. اضغط على القلب لإضافة الصوتيات هنا!</div>`;
+        // تشغيل وإيقاف الصوت مؤقتاً
+        playPauseBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
             } else {
-                container.innerHTML = `<div class="status-message">لا توجد نتائج مطابقة لبحثك في هذا القسم.</div>`;
-            }
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-
-        filtered.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'audio-card';
-            card.id = `card-${item.id}`;
-            const safeTitle = item.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            const isFav = favoritesList.includes(item.id) ? 'is-fav' : '';
-            const favIcon = favoritesList.includes(item.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-            
-            const isPlayingNow = activePlayers[item.id] && !activePlayers[item.id].audio.paused;
-            const playIconClass = isPlayingNow ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-
-            let datesHtml = '';
-            if (item.dateAdded) {
-                datesHtml = `<div class="audio-dates-inline">
-                    <div class="date-item added" title="تاريخ الإضافة"><i class="fa-regular fa-calendar"></i> <span>أضيف: ${item.dateAdded}</span></div>
-                </div>`;
-            }
-            
-            card.innerHTML = `
-                <div class="audio-layout-top">
-                    <div class="audio-main-content">
-                        <div class="music-note-icon"><i class="fa-solid fa-music"></i></div>
-                        <div class="audio-info-block">
-                            <div class="audio-title">${item.title}</div>
-                            <div class="audio-desc-container">
-                                <span class="desc-label">الوصف:</span>
-                                <span class="desc-value">${item.desc}</span>
-                            </div>
-                        </div>
-                    </div>
-                    ${datesHtml}
-                </div>
-                <div class="player-controls-container">
-                    <div class="timeline-container">
-                        <div class="timeline" id="timeline-${item.id}" onmousedown="startSeek(event, '${item.id}')" ontouchstart="startSeek(event, '${item.id}')">
-                            <div class="progress-bar" id="progress-${item.id}"></div>
-                        </div>
-                        <div class="time-labels">
-                            <span id="current-${item.id}">00:00</span>
-                            <span id="duration-${item.id}">00:00</span>
-                        </div>
-                    </div>
-                    <div class="buttons-row">
-                        <button class="control-btn btn-play-pause" onclick="togglePlay('${item.id}', '${item.url}')">
-                            <i class="${playIconClass}" id="icon-${item.id}"></i>
-                        </button>
-                        <div class="control-left-group">
-                            <button class="control-btn btn-share-action" title="نسخ رابط الموقع والصوت" onclick="shareAudio('${safeTitle}', '${item.id}')">
-                                <i class="fa-solid fa-share-nodes"></i>
-                            </button>
-                            <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
-                                <i class="${favIcon}"></i>
-                            </button>
-                            <button class="control-btn btn-loop-toggle ${activePlayers[item.id] && activePlayers[item.id].audio.loop ? 'is-looping' : ''}" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
-                                <i class="fa-solid fa-repeat"></i>
-                            </button>
-                            <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" onclick="downloadAudio(this)">
-                                <i class="fa-solid fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            fragment.appendChild(card);
-        });
-
-        container.appendChild(fragment);
-
-        Object.keys(activePlayers).forEach(id => {
-            if (document.getElementById(`progress-${id}`)) {
-                setupAudioEvents(id);
+                audio.pause();
             }
         });
-    }
 
-    function setupAudioEvents(id) {
-        const playerObj = activePlayers[id];
-        if (!playerObj) return;
+        audio.addEventListener('play', () => {
+            playIcon.className = 'fa-solid fa-pause';
+        });
 
-        const audio = playerObj.audio;
-        const progressBar = document.getElementById(`progress-${id}`);
-        const currentTxt = document.getElementById(`current-${id}`);
-        const durationTxt = document.getElementById(`duration-${id}`);
-        const icon = document.getElementById(`icon-${id}`);
+        audio.addEventListener('pause', () => {
+            playIcon.className = 'fa-solid fa-play';
+        });
 
-        audio.ontimeupdate = () => {
-            if (audio.duration) {
-                const percentage = (audio.currentTime / audio.duration) * 100;
-                if (progressBar) progressBar.style.width = percentage + '%';
-                if (currentTxt) currentTxt.textContent = formatTime(audio.currentTime);
+        // قفزات التقديم والتأخير بمقدار 10 ثوانٍ
+        forwardBtn.addEventListener('click', () => {
+            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        });
+
+        rewindBtn.addEventListener('click', () => {
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        });
+
+        // تحديث معلومات شريط التقدم الحركي والعدادات
+        audio.addEventListener('timeupdate', () => {
+            const current = audio.currentTime;
+            const duration = audio.duration;
+            if (duration) {
+                const percentage = (current / duration) * 100;
+                progressBar.style.width = percentage + '%';
+                currentTimeLabel.textContent = formatTime(current);
             }
-        };
+        });
 
-        if (audio.duration) {
-            if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
-        }
+        audio.addEventListener('loadedmetadata', () => {
+            durationLabel.textContent = formatTime(audio.duration);
+        });
 
-        audio.onloadedmetadata = () => {
-            if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
-        };
-
-        audio.onended = () => {
+        audio.addEventListener('ended', () => {
             if (!audio.loop) {
-                if (icon) icon.className = 'fa-solid fa-play';
-                if (progressBar) progressBar.style.width = '0%';
-                if (currentTxt) currentTxt.textContent = '00:00';
-            }
-        };
-    }
-
-    function togglePlay(id, url) {
-        const icon = document.getElementById(`icon-${id}`);
-        
-        if (!activePlayers[id]) {
-            activePlayers[id] = { audio: new Audio(url) };
-            activePlayers[id].audio.preload = "metadata";
-        }
-
-        const audio = activePlayers[id].audio;
-
-        Object.keys(activePlayers).forEach(key => {
-            if (key !== id && !activePlayers[key].audio.paused) {
-                activePlayers[key].audio.pause();
-                const otherIcon = document.getElementById(`icon-${key}`);
-                if (otherIcon) otherIcon.className = 'fa-solid fa-play';
+                playIcon.className = 'fa-solid fa-play';
             }
         });
 
-        setupAudioEvents(id);
-
-        if (audio.paused) {
-            audio.play().then(() => {
-                if (icon) icon.className = 'fa-solid fa-pause';
-            }).catch(err => console.error(err));
-        } else {
-            audio.pause();
-            if (icon) icon.className = 'fa-solid fa-play';
+        // معالجة النقر واللمس على التايم لاين
+        function handleScrub(e) {
+            const rect = timeline.getBoundingClientRect();
+            const duration = audio.duration;
+            if (duration) {
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clickXFromRight = rect.right - clientX;
+                let percentage = clickXFromRight / rect.width;
+                percentage = Math.max(0, Math.min(1, percentage));
+                audio.currentTime = percentage * duration;
+            }
         }
-    }
+        timeline.addEventListener('click', handleScrub);
+        timeline.addEventListener('touchstart', handleScrub, { passive: true });
 
-    let isDragging = false;
-    let currentActiveId = null;
-
-    function startSeek(e, id) {
-        isDragging = true;
-        currentActiveId = id;
-        processSeek(e, id);
-        window.addEventListener('mousemove', handleGlobalMove);
-        window.addEventListener('touchmove', handleGlobalMove, { passive: false });
-        window.addEventListener('mouseup', stopSeek);
-        window.addEventListener('touchend', stopSeek);
-    }
-
-    function handleGlobalMove(e) {
-        if (!isDragging || !currentActiveId) return;
-        if (e.type === 'touchmove') e.preventDefault(); 
-        processSeek(e, currentActiveId);
-    }
-
-    function processSeek(e, id) {
-        if (!activePlayers[id]) return;
-        const audio = activePlayers[id].audio;
-        const timeline = document.getElementById('timeline-' + id);
-        if (!timeline) return;
-        
-        const rect = timeline.getBoundingClientRect();
-        let clientX;
-        if (e.touches && e.touches.length > 0) clientX = e.touches[0].clientX;
-        else if (e.changedTouches && e.changedTouches.length > 0) clientX = e.changedTouches[0].clientX;
-        else clientX = e.clientX;
-        
-        const width = rect.width;
-        const clickXFromRight = rect.right - clientX;
-        
-        if (width > 0) {
-            const percent = Math.min(Math.max(0, clickXFromRight / width), 1);
-            const progressBar = document.getElementById('progress-' + id);
-            if (progressBar) progressBar.style.width = (percent * 100) + '%';
-            const currentTxt = document.getElementById('current-' + id);
-            if (currentTxt && audio.duration) currentTxt.textContent = formatTime(percent * audio.duration);
-            if (audio.duration) audio.currentTime = percent * audio.duration;
+        function formatTime(seconds) {
+            let min = Math.floor(seconds / 60);
+            let sec = Math.floor(seconds % 60);
+            if (sec < 10) sec = '0' + sec;
+            return min + ':' + sec;
         }
-    }
 
-    function stopSeek() {
-        isDragging = false;
-        currentActiveId = null;
-        window.removeEventListener('mousemove', handleGlobalMove);
-        window.removeEventListener('touchmove', handleGlobalMove);
-        window.removeEventListener('mouseup', stopSeek);
-        window.removeEventListener('touchend', stopSeek);
-    }
+        // تفعيل وإيقاف التكرار اللانهائي للمادة
+        loopBtn.addEventListener('click', () => {
+            audio.loop = !audio.loop;
+            loopBtn.classList.toggle('active-loop', audio.loop);
+        });
 
-    function toggleLoop(id) {
-        if (!activePlayers[id]) return;
-        const audio = activePlayers[id].audio;
-        audio.loop = !audio.loop;
-        const loopBtn = document.getElementById('loop-' + id);
-        if (loopBtn) loopBtn.classList.toggle('is-looping', audio.loop);
-    }
+        // فتح وإغلاق قائمة منيو سرعات الاستماع
+        speedBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            speedMenu.style.display = speedMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
 
-    function filterAndSearchAudio() {
-        renderAudioCards();
-    }
-
-    function downloadAudio(btn) {
-        const url = btn.getAttribute('data-url');
-        const title = btn.getAttribute('data-title');
-        const originalContent = btn.innerHTML;
-        
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
-        btn.disabled = true;
-        
-        const extension = url.split('.').pop().split(/[?#]/)[0] || 'zip';
-        
-        fetch(url)
-            .then(response => response.blob())
-            .then(blob => {
-                const blobUrl = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = `${title}.${extension}`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(blobUrl);
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            })
-            .catch(() => {
-                alert('فشل تحميل الملف، يرجى المحاولة لاحقاً.');
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
+        speedOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const speed = parseFloat(option.getAttribute('data-speed'));
+                audio.playbackRate = speed;
+                speedBtn.textContent = speed + 'x';
+                
+                speedBtn.classList.toggle('active-speed', speed !== 1.0);
+                speedOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                speedMenu.style.display = 'none';
             });
-    }
+        });
 
-    function formatTime(seconds) {
-        if (isNaN(seconds) || !isFinite(seconds)) return "00:00";
-        let min = Math.floor(seconds / 60);
-        let sec = Math.floor(seconds % 60);
-        if (sec < 10) sec = '0' + sec;
-        return min + ':' + sec;
-    }
+        document.addEventListener('click', () => {
+            speedMenu.style.display = 'none';
+        });
 
-    window.onload = fetchAllSheetsData;
-</script>
+        // تحميل الملف المباشر بالأيقونة النظيفة
+        downloadBtn.addEventListener('click', async () => {
+            try {
+                downloadBtn.classList.add('loading-dl');
+                dlIcon.className = 'fa-solid fa-spinner fa-spin';
 
+                const response = await fetch(audioUrl);
+                if (!response.ok) throw new Error('فشل تحميل الملف');
+                
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const tempLink = document.createElement('a');
+                tempLink.href = blobUrl;
+                tempLink.download = "كتالوج 3.mp3"; 
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                
+                document.body.removeChild(tempLink);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                console.error("خطأ بالتحميل:", error);
+                window.open(audioUrl, '_blank');
+            } finally {
+                downloadBtn.classList.remove('loading-dl');
+                dlIcon.className = 'fa-solid fa-cloud-arrow-down';
+            }
+        });
+
+        // تحكم أزرار اللابتوب ولوحة المفاتيح والأسهم المعكوسة
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            // السهم الأيسر للتقديم 10 ثوانٍ
+            if (e.key === 'ArrowLeft' || e.key === 'Left' || e.key === 'MediaTrackPrevious') {
+                e.preventDefault();
+                audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+            }
+            
+            // السهم الأيمن للتأخير 10 ثوانٍ
+            else if (e.key === 'ArrowRight' || e.key === 'Right' || e.key === 'MediaTrackNext') {
+                e.preventDefault();
+                audio.currentTime = Math.max(0, audio.currentTime - 10);
+            }
+            
+            // زر المسافة (Spacebar) للتشغيل والإيقاف المؤقت
+            else if (e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault();
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
