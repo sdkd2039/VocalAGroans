@@ -754,7 +754,7 @@
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(message).then(() => {
-                alert("تم نسخ الموعد بنجاح!");
+                alert("تم نسخ الرابط بنجاح!");
             }).catch(() => {
                 fallbackCopyText(message);
             });
