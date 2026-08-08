@@ -587,7 +587,7 @@
 </head>
 <body oncontextmenu="return false;">
 
-<!-- شاشة الترحيب (صورة متحركة بحجم الشاشة بالكامل وبمدة عرض 5.2 ثانية) -->
+<!-- شاشة الترحيب (صورة متحركة بحجم الشاشة بالكامل وبمدة عرض 5.0 ثانية) -->
 <div id="splashScreen">
     <img src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/Video.Guru__-ezgif.com-video-to-gif-converter.gif" alt="شعار آهات صوتية المتحرك" class="splash-logo" ondragstart="return false;">
 </div>
@@ -648,14 +648,14 @@
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    // ضبط مدة عرض شاشة الترحيب لتصبح 5.2 ثانية تماماً
+    // ضبط مدة عرض شاشة الترحيب لتصبح 5.0 ثانية تماماً
     window.addEventListener('load', () => {
         const splash = document.getElementById('splashScreen');
         if (splash) {
             setTimeout(() => {
                 splash.style.opacity = '0';
                 setTimeout(() => splash.remove(), 600);
-            }, 5200);
+            }, 5000);
         }
     });
 
