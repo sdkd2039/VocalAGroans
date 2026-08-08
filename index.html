@@ -67,7 +67,6 @@
             padding: 30px 15px 40px 15px;
         }
 
-        /* تصميم شاشة الترحيب المتحركة (مع التبديل التلقائي حسب الجهاز) */
         #splashScreen {
             position: fixed;
             top: 0;
@@ -92,7 +91,6 @@
             filter: none;
         }
 
-        /* التحكم بعرض صورة الجوال أو الكمبيوتر بناءً على مساحة الشاشة */
         .splash-mobile {
             display: block;
         }
@@ -604,7 +602,6 @@
 </head>
 <body oncontextmenu="return false;">
 
-<!-- شاشة الترحيب (تخصص رابط الجوال ورابط الكمبيوتر تلقائياً وبمدة 5 ثواني) -->
 <div id="splashScreen">
     <img src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/Video.Guru__-ezgif.com-video-to-gif-converter.gif" alt="شعار آيات صوتية المتحرك للجوال" class="splash-logo splash-mobile" ondragstart="return false;">
     <img src="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/Video.Guru__-ezgif.com-video-to-gif-converter%20(1).gif" alt="شعار آيات صوتية المتحرك للكمبيوتر" class="splash-logo splash-desktop" ondragstart="return false;">
@@ -663,10 +660,10 @@
     let categoriesData = { 'آهات': [], 'مؤثرات': [], 'انتقالات': [], 'صوت': [] };
     let randomAllAudio = []; 
     let activePlayers = {};
+    let lastActiveAudioId = null;
     let currentTab = 'all'; 
     let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
-    // ضبط مدة عرض شاشة الترحيب لتصبح 5 ثواني تماماً
     window.addEventListener('load', () => {
         const splash = document.getElementById('splashScreen');
         if (splash) {
@@ -1030,6 +1027,7 @@
         });
 
         setupAudioEvents(id);
+        lastActiveAudioId = id;
 
         if (audio.paused) {
             audio.play().then(() => {
@@ -1047,6 +1045,7 @@
     function startSeek(e, id) {
         isDragging = true;
         currentActiveId = id;
+        lastActiveAudioId = id;
         processSeek(e, id);
         window.addEventListener('mousemove', handleGlobalMove);
         window.addEventListener('touchmove', handleGlobalMove, { passive: false });
@@ -1144,6 +1143,45 @@
         if (sec < 10) sec = '0' + sec;
         return min + ':' + sec;
     }
+
+    // دعم أزرار لوحة المفاتيح واللابتوب (المسافة، الأسر، والميديا) للملف النشط حالياً
+    document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        // تحديد المقطع النشط (إما الذي يشتغل حالياً أو آخر مقطع تم التفاعل معه)
+        let activeId = lastActiveAudioId;
+        if (!activeId) {
+            // البحث عن أول صوت قيد التشغيل
+            for (let id in activePlayers) {
+                if (!activePlayers[id].audio.paused) {
+                    activeId = id;
+                    break;
+                }
+            }
+        }
+        if (!activeId) return; // إن لم يكن هناك صوت نشط، لا تفعل شيئاً
+
+        const audio = activePlayers[activeId].audio;
+
+        // السهم الأيسر أو زر ميديا السابق -> تقديم 10 ثوانٍ
+        if (e.key === 'ArrowLeft' || e.key === 'Left' || e.key === 'MediaTrackPrevious') {
+            e.preventDefault();
+            audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        }
+        // السهم الأيمن أو زر ميديا التالي -> تأخير 10 ثوانٍ
+        else if (e.key === 'ArrowRight' || e.key === 'Right' || e.key === 'MediaTrackNext') {
+            e.preventDefault();
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        }
+        // زر المسافة (Spacebar) -> تشغيل / إيقاف مؤقت
+        else if (e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            if (document.activeElement) {
+                document.activeElement.blur();
+            }
+            togglePlay(activeId, audio.src);
+        }
+    });
 
     window.onload = fetchAllSheetsData;
 </script>
