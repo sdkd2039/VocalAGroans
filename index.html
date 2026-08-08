@@ -395,7 +395,6 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            text-decoration: none;
         }
 
         .btn-play-pause {
@@ -432,16 +431,24 @@
         .btn-fav-toggle:hover { transform: scale(1.1); }
         .btn-fav-toggle.is-fav { color: var(--favorite-color); }
 
-        .btn-link-action, .btn-download-action {
-            width: 36px;
-            height: 36px;
+        .btn-share-action {
+            font-size: 1rem;
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+        }
+        .btn-share-action:hover { color: var(--primary-color); transform: scale(1.1); }
+
+        .btn-download-action {
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             background: rgba(56, 189, 248, 0.08);
             border: 1px solid rgba(56, 189, 248, 0.2);
             color: var(--primary-color);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
-        .btn-link-action:hover, .btn-download-action:hover {
+        .btn-download-action:hover {
             background: var(--primary-color);
             color: var(--bg-color);
             border-color: var(--primary-color);
@@ -735,6 +742,25 @@
         }
     }
 
+    // دالة مشاركة رابط الصوت المباشر
+    function shareAudio(title, audioUrl) {
+        const shareData = {
+            title: 'آهات صوتية',
+            text: `استمع إلى المؤثر الصوتي: ${title}`,
+            url: audioUrl
+        };
+
+        if (navigator.share) {
+            navigator.share(shareData).catch(() => {});
+        } else {
+            navigator.clipboard.writeText(audioUrl).then(() => {
+                alert('تم نسخ رابط الملف الصوتي إلى الحافظة بنجاح!');
+            }).catch(() => {
+                alert('تعذر نسخ الرابط.');
+            });
+        }
+    }
+
     function renderAudioCards() {
         const container = document.getElementById('audioContainer');
         container.innerHTML = '';
@@ -818,16 +844,16 @@
                             <i class="${playIconClass}" id="icon-${item.id}"></i>
                         </button>
                         <div class="control-left-group">
+                            <button class="control-btn btn-share-action" title="مشاركة أو نسخ رابط الصوت" onclick="shareAudio('${safeTitle}', '${item.url}')">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
                             <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
                                 <i class="${favIcon}"></i>
                             </button>
                             <button class="control-btn btn-loop-toggle ${activePlayers[item.id] && activePlayers[item.id].audio.loop ? 'is-looping' : ''}" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
                                 <i class="fa-solid fa-repeat"></i>
                             </button>
-                            <a href="${item.url}" target="_blank" class="control-btn btn-link-action" title="رابط الملف الصوتي المباشر">
-                                <i class="fa-solid fa-link"></i>
-                            </a>
-                            <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" title="تحميل الملف" onclick="downloadAudio(this)">
+                            <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" onclick="downloadAudio(this)">
                                 <i class="fa-solid fa-download"></i>
                             </button>
                         </div>
