@@ -689,6 +689,9 @@
 
             updateFavBadge();
             renderAudioCards();
+
+            // فحص ما إذا كان هناك رابط مخصص لصوت معين عند فتح الصفحة
+            checkUrlHashForAudio(uniquePool);
         } catch (err) {
             document.getElementById('statusMessage').innerHTML = 'حدث خطأ أثناء تحميل الملفات الصوتية.';
             console.error(err);
@@ -742,22 +745,62 @@
         }
     }
 
-    // دالة مشاركة رابط الصوت المباشر
-    function shareAudio(title, audioUrl) {
+    // دالة مشاركة رابط الموقع مع معرف الصوت المحدد
+    function shareAudio(title, audioId) {
+        const baseUrl = window.location.href.split('#')[0].split('?')[0];
+        const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
+
         const shareData = {
             title: 'آهات صوتية',
             text: `استمع إلى المؤثر الصوتي: ${title}`,
-            url: audioUrl
+            url: siteAudioUrl
         };
 
         if (navigator.share) {
             navigator.share(shareData).catch(() => {});
         } else {
-            navigator.clipboard.writeText(audioUrl).then(() => {
-                alert('تم نسخ رابط الملف الصوتي إلى الحافظة بنجاح!');
+            navigator.clipboard.writeText(siteAudioUrl).then(() => {
+                alert('تم نسخ رابط الموقع الخاص بالصوت إلى الحافظة بنجاح!');
             }).catch(() => {
                 alert('تعذر نسخ الرابط.');
             });
+        }
+    }
+
+    // التحقق من وجود معرف صوت في الرابط عند فتح الموقع والتمرير إليه وتغعيله تلقائياً
+    function checkUrlHashForAudio(allPool) {
+        const hash = window.location.hash;
+        if (hash && hash.includes('audio=')) {
+            const targetId = hash.split('audio=')[1];
+            const targetItem = allPool.find(item => item.id === targetId);
+            
+            if (targetItem) {
+                // إذا لم يكن الصوت في القائمة المعروضة حالياً (مثلاً في اقتراحات لك)، نقوم بتحويل التبويب للقسم الخاص به أو عرضه
+                let foundInCurrent = false;
+                document.querySelectorAll('.audio-card').forEach(card => {
+                    if (card.querySelector(`[data-fav-id="${targetId}"]`) || card.querySelector(`[onclick*="${targetId}"]`)) {
+                        foundInCurrent = true;
+                    }
+                });
+
+                // الانتقال للقسم الذي ينتمي إليه الصوت أو إضافته مؤقتاً ليعرض للمستخدم
+                let targetCategory = targetItem.category;
+                const tabButton = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.includes(targetCategory));
+                if (tabButton) {
+                    switchTab(targetCategory, tabButton);
+                }
+
+                setTimeout(() => {
+                    const cardElement = document.getElementById(`card-${targetId}`);
+                    if (cardElement) {
+                        cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        cardElement.style.border = '2px solid var(--primary-color)';
+                        setTimeout(() => {
+                            togglePlay(targetItem.id, targetItem.url);
+                        }, 500);
+                    }
+                }, 300);
+            }
         }
     }
 
@@ -801,6 +844,7 @@
         filtered.forEach(item => {
             const card = document.createElement('div');
             card.className = 'audio-card';
+            card.id = `card-${item.id}`;
             const safeTitle = item.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
             const isFav = favoritesList.includes(item.id) ? 'is-fav' : '';
             const favIcon = favoritesList.includes(item.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
@@ -844,7 +888,7 @@
                             <i class="${playIconClass}" id="icon-${item.id}"></i>
                         </button>
                         <div class="control-left-group">
-                            <button class="control-btn btn-share-action" title="مشاركة أو نسخ رابط الصوت" onclick="shareAudio('${safeTitle}', '${item.url}')">
+                            <button class="control-btn btn-share-action" title="مشاركة أو نسخ رابط الموقع للصوت" onclick="shareAudio('${safeTitle}', '${item.id}')">
                                 <i class="fa-solid fa-share-nodes"></i>
                             </button>
                             <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
