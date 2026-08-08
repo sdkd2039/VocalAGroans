@@ -383,7 +383,7 @@
         .control-left-group {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
         }
 
         .control-btn {
@@ -395,6 +395,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            text-decoration: none;
         }
 
         .btn-play-pause {
@@ -431,16 +432,16 @@
         .btn-fav-toggle:hover { transform: scale(1.1); }
         .btn-fav-toggle.is-fav { color: var(--favorite-color); }
 
-        .btn-download-action {
-            width: 38px;
-            height: 38px;
+        .btn-link-action, .btn-download-action {
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
             background: rgba(56, 189, 248, 0.08);
             border: 1px solid rgba(56, 189, 248, 0.2);
             color: var(--primary-color);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
-        .btn-download-action:hover {
+        .btn-link-action:hover, .btn-download-action:hover {
             background: var(--primary-color);
             color: var(--bg-color);
             border-color: var(--primary-color);
@@ -643,15 +644,11 @@
             const rows = json.table.rows; 
 
             return rows.map((row) => {
-                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; // العمود A (العنوان)
-                const url = row.c[1] ? row.c[1].v : ''; // العمود B (رابط الصوت)
-                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; // العمود C (الوصف)
-                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : ''; // العمود D (تاريخ الإضافة التلقائي)
-                
-                // تعديل رابط التحميل ليأخذ القيمة من العمود E (الفهرس 4) كملف مضغوط اختياري، وإذا لم يوجد يستخدم رابط الصوت الأساسي (العمود B)
-                const zipUrl = row.c[4] && row.c[4].v ? row.c[4].v : '';
-                const downloadUrl = zipUrl !== '' ? zipUrl : url; 
-                
+                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
+                const url = row.c[1] ? row.c[1].v : ''; 
+                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
+                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
+                const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
                 const uniqueId = generateCleanId(url);
                 
                 return { id: uniqueId, title, url, desc, dateAdded, downloadUrl, category: sheetName };
@@ -827,7 +824,10 @@
                             <button class="control-btn btn-loop-toggle ${activePlayers[item.id] && activePlayers[item.id].audio.loop ? 'is-looping' : ''}" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
                                 <i class="fa-solid fa-repeat"></i>
                             </button>
-                            <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" onclick="downloadAudio(this)">
+                            <a href="${item.url}" target="_blank" class="control-btn btn-link-action" title="رابط الملف الصوتي المباشر">
+                                <i class="fa-solid fa-link"></i>
+                            </a>
+                            <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" title="تحميل الملف" onclick="downloadAudio(this)">
                                 <i class="fa-solid fa-download"></i>
                             </button>
                         </div>
