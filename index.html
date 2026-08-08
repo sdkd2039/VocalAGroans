@@ -750,7 +750,7 @@
     function shareAudio(title, audioId) {
         const baseUrl = window.location.href.split('#')[0].split('?')[0];
         const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
-        const message = `استمع إلى المؤثر الصوتي: ${title}\n${siteAudioUrl}`;
+        const message = `استمع إلى هذا الصوتية: ${title}\n${siteAudioUrl}`;
 
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(message).then(() => {
@@ -773,7 +773,7 @@
         textArea.select();
         try {
             document.execCommand('copy');
-            alert("تم نسخ النص بنجاح!");
+            alert("تم نسخ الرابط بنجاح!");
         } catch (err) {
             alert("تعذر النسخ التلقائي، يرجى تحديده يدوياً.");
         }
