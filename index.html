@@ -1,1086 +1,602 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMR1NXR7PC"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>آهات صوتية</title>
 
-      gtag('config', 'G-KMR1NXR7PC');
-    </script>
+  <!-- Primary images (update filenames here if you store different files in the repo) -->
+  <!-- logo-with-text: used for apple-touch icons (home screen) so the saved icon shows your logo including text -->
+  <!-- logo-no-text: used for social previews (og/twitter images) so shared cards show a clean logo without text -->
+  <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401783227614594.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401783227614594.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401783227614594.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401783227614594.png">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>آهات صوتية</title>
+  <!-- Standard favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401785315620882.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401785315620882.png">
+  <link rel="manifest" href="manifest.json">
 
-    <!-- إعدادات مشاركة الروابط والشعارات (بدون كتابة) -->
-    <meta property="og:title" content="آهات صوتية - سمعك بلا ضجيج">
-    <meta property="og:description" content="تصفح واستمع إلى أجمل الآهات والمؤثرات الصوتية الخالية من الموسيقى.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png">[cite: 2]
-    <meta property="og:url" content="https://sdkd2039.github.io/VocalAGroans/">
+  <!-- iOS web app capabilities so "Add to Home Screen" uses the apple-touch-icon and app meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="آهات صوتية">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png">[cite: 2]
+  <!-- Theme color (used by some mobile browsers and PWA) -->
+  <meta name="theme-color" content="#0b0f19">
 
-    <!-- إعدادات تطبيق الويب PWA لأندرويد والهواتف الذكية -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0b0f19">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="آهات صوتية">
+  <!-- Open Graph (link previews / share cards) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="آهات صوتية - سمعك بلا ضجيج">
+  <meta property="og:description" content="تصفح واستمع إلى أجمل الآهات والمؤثرات الصوتية الخالية من الموسيقى.">
+  <meta property="og:url" content="https://sdkd2039.github.io/VocalAGroans/">
+  <meta property="og:image" content="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401785315620882.png">
+  <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401785315620882.png">
+  <meta property="og:image:type" content="image/png">
+  <!-- If you know exact image dimensions, set them for better previews -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="شعار آهات صوتية">
 
-    <!-- أيقونات الآيفون والآيباد للشاشة الرئيسية (بدون كتابة) -->
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png">[cite: 2]
-    <link rel="apple-touch-icon" sizes="152x152" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png">[cite: 2]
-    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png">[cite: 2]
-    <link rel="apple-touch-icon" sizes="167x167" href="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401785315620882.png">[cite: 2]
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #131926;
-            --text-color: #f8fafc;
-            --primary-color: #38bdf8;
-            --primary-hover: #0ea5e9;
-            --text-muted: #64748b;
-            --player-bg: #1a2333;
-            --success-color: #10b981;
-            --success-hover: #059669;
-            --desc-text-color: #94a3b8;
-            --warning-color: #e67e22;
-            --favorite-color: #ef4444;
-        }
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="آهات صوتية - سمعك بلا ضجيج">
+  <meta name="twitter:description" content="تصفح واستمع إلى أجمل الآهات والمؤثرات الصوتية الخالية من الموسيقى.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401785315620882.png">
+  <meta name="twitter:image:alt" content="شعار آهات صوتية">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Estedad', 'Noto Kufi Arabic', sans-serif;
-        }
+  <!-- Structured data image (optional, helps some platforms) -->
+  <meta itemprop="image" content="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401785315620882.png">
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px 15px 40px 15px;
-        }
+  <!-- Fonts & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .container {
-            width: 100%;
-            max-width: 850px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  <!-- Google Analytics (if you use it) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMR1NXR7PC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KMR1NXR7PC');
+  </script>
 
-        .boxed-header-container {
-            width: 100%;
-            height: 280px;
-            background-image: linear-gradient(rgba(11, 15, 25, 0.4), rgba(11, 15, 25, 0.75)), url('https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/rmqg5t.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: 24px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #131926;
+      --text-color: #f8fafc;
+      --primary-color: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --text-muted: #64748b;
+      --player-bg: #1a2333;
+      --success-color: #10b981;
+      --desc-text-color: #94a3b8;
+      --favorite-color: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Estedad', 'Noto Kufi Arabic', sans-serif; }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px 40px 15px;
+    }
+    .container { width: 100%; max-width: 850px; flex: 1; display:flex; flex-direction: column; align-items: center; }
+    .boxed-header-container {
+      width: 100%;
+      height: 280px;
+      background-image: linear-gradient(rgba(11,15,25,0.4), rgba(11,15,25,0.75)), url('https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/header-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 24px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+    .header-main-logo { max-width: 140px; height: auto; margin-bottom: 12px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); pointer-events: none; user-select: none; }
+    .slogan { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 10px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+    .warning { color: #ff4d4d; background: rgba(11,15,25,0.8); padding: 6px 18px; border-radius: 50px; display: inline-block; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,77,77,0.25); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    .tabs-container { width:100%; display:flex; justify-content:center; gap:8px; margin-bottom:20px; padding: 0 5px; flex-wrap:wrap; }
+    .tab-btn { background:var(--card-bg); border:1px solid #1e293b; color:var(--text-muted); padding:10px 20px; border-radius:12px; cursor:pointer; font-weight:600; font-size:0.9rem; display:flex; gap:8px; align-items:center; }
+    .tab-btn.active { background:var(--primary-color); color:var(--bg-color); border-color:var(--primary-color); }
+    .fav-badge { background:var(--favorite-color); color:#fff; font-size:0.72rem; font-weight:700; padding:2px 6px; border-radius:50px; min-width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--card-bg); }
+    .search-container { width:100%; position:relative; margin-bottom:25px; }
+    .search-input { width:100%; background:var(--card-bg); border:1px solid #1e293b; border-radius:14px; padding:15px 45px 15px 15px; color:var(--text-color); font-size:0.95rem; outline:none; }
+    .search-input:focus { border-color:var(--primary-color); box-shadow: 0 0 0 3px rgba(56,189,248,0.1); }
+    .search-icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none; }
 
-        .header-main-logo {
-            max-width: 140px;
-            height: auto;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
-            pointer-events: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
+    .audio-list { display:grid; grid-template-columns: repeat(2,1fr); gap:16px; width:100%; }
+    .audio-card { background:var(--card-bg); border:1px solid #1e293b; border-radius:18px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,0.2); display:flex; flex-direction:column; gap:15px; }
+    .music-note-icon { background: rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.15); color:var(--primary-color); width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+    .audio-title { font-size:1rem; font-weight:700; color:#fff; line-height:1.4; }
+    .player-controls-container { display:flex; flex-direction:column; gap:12px; background:var(--player-bg); padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.01); }
+    .timeline { width:100%; height:6px; background:#2e3d52; border-radius:10px; position:relative; cursor:pointer; }
+    .progress-bar { height:100%; width:0%; background:linear-gradient(270deg,var(--primary-color),#0ea5e9); border-radius:10px; }
+    .time-labels { display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); font-weight:500; }
+    .buttons-row { display:flex; justify-content:space-between; align-items:center; }
+    .control-btn { background:none; border:none; color:var(--text-color); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .btn-play-pause { width:40px; height:40px; border-radius:50%; background: rgba(56,189,248,0.1); border: 2px solid var(--primary-color); color: var(--primary-color); }
+    .btn-loop-toggle.is-looping { color:var(--primary-color); }
+    .btn-fav-toggle.is-fav { color:var(--favorite-color); }
+    .btn-download-action { width:38px; height:38px; border-radius:10px; background: rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.2); color:var(--primary-color); }
 
-        .slogan {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-        }
+    .status-message { grid-column: span 2; text-align:center; color:var(--text-muted); padding:40px 20px; font-size:0.9rem; }
 
-        .warning {
-            color: #ff4d4d;
-            background: rgba(11, 15, 25, 0.8);
-            padding: 6px 18px;
-            border-radius: 50px;
-            display: inline-block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border: 1px solid rgba(255, 77, 77, 0.25);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+    .footer { margin-top:60px; width:100%; max-width:850px; text-align:center; border-top:1px solid #1e293b; padding-top:25px; }
+    .footer-rights { font-size:0.95rem; font-weight:700; color:#f8fafc; line-height:1.6; margin-bottom:20px; }
+    .footer-socials { display:flex; justify-content:center; gap:15px; }
+    .social-link { text-decoration:none; font-size:0.9rem; font-weight:500; display:flex; gap:8px; align-items:center; padding:8px 18px; border-radius:10px; border:1px solid #1e293b; background: rgba(19,25,38,0.6); color:#fff; }
 
-        .tabs-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-            padding: 0 5px;
-        }
-
-        .tab-btn {
-            background: var(--card-bg);
-            border: 1px solid #1e293b;
-            color: var(--text-muted);
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-        }
-
-        .tab-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--text-color);
-        }
-
-        .tab-btn.active {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            border-color: var(--primary-color);
-        }
-
-        .tab-btn i {
-            font-size: 0.95rem;
-        }
-
-        .fav-badge {
-            background-color: var(--favorite-color);
-            color: #ffffff;
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 50px;
-            min-width: 18px;
-            height: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--card-bg);
-            transition: all 0.2s ease;
-        }
-        
-        .tab-btn.active .fav-badge {
-            border-color: var(--primary-color);
-        }
-
-        .search-container {
-            position: relative;
-            margin-bottom: 25px;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid #1e293b;
-            border-radius: 14px;
-            padding: 15px 45px 15px 15px;
-            color: var(--text-color);
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        .search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        .audio-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            width: 100%;
-        }
-
-        .audio-card {
-            background: var(--card-bg);
-            border: 1px solid #1e293b;
-            border-radius: 18px;
-            padding: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .audio-layout-top {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .audio-main-content {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-
-        .music-note-icon {
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.15);
-            color: var(--primary-color);
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .audio-info-block {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .audio-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: 2.8em;
-        }
-
-        .audio-desc-container {
-            font-size: 0.8rem;
-            font-style: normal;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .desc-label {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-left: 4px;
-        }
-
-        .desc-value {
-            color: var(--desc-text-color);
-        }
-
-        .audio-dates-inline {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            padding-right: 58px;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-top: -2px;
-        }
-
-        .date-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 3px 8px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .date-item i { font-size: 0.75rem; }
-        .date-item.added i { color: var(--text-muted); }
-
-        .player-controls-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: var(--player-bg);
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.01);
-        }
-
-        .timeline-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .timeline {
-            width: 100%;
-            height: 6px;
-            background: #2e3d52;
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(270deg, var(--primary-color), #0ea5e9);
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .time-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .buttons-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .control-left-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .control-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-        }
-
-        .btn-play-pause {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(56, 189, 248, 0.1);
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            font-size: 0.95rem;
-        }
-
-        .btn-play-pause:hover {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            transform: scale(1.05);
-        }
-
-        .btn-loop-toggle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            width: 32px;
-            height: 32px;
-        }
-        .btn-loop-toggle:hover { transform: scale(1.1); }
-        .btn-loop-toggle.is-looping { color: var(--primary-color); }
-
-        .btn-fav-toggle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            width: 32px;
-            height: 32px;
-        }
-        .btn-fav-toggle:hover { transform: scale(1.1); }
-        .btn-fav-toggle.is-fav { color: var(--favorite-color); }
-
-        .btn-share-action {
-            font-size: 1rem;
-            color: var(--text-muted);
-            width: 32px;
-            height: 32px;
-        }
-        .btn-share-action:hover { color: var(--primary-color); transform: scale(1.1); }
-
-        .btn-download-action {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: rgba(56, 189, 248, 0.08);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            color: var(--primary-color);
-            font-size: 1rem;
-        }
-        .btn-download-action:hover {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            border-color: var(--primary-color);
-        }
-
-        .status-message {
-            grid-column: span 2;
-            text-align: center;
-            color: var(--text-muted);
-            padding: 40px 20px;
-            font-size: 0.9rem;
-        }
-
-        .footer {
-            margin-top: 60px;
-            width: 100%;
-            max-width: 850px;
-            text-align: center;
-            border-top: 1px solid #1e293b;
-            padding-top: 25px;
-        }
-
-        .footer-rights {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #f8fafc;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            flex-wrap: nowrap;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .social-link {
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(19, 25, 38, 0.6);
-            padding: 8px 18px;
-            border-radius: 10px;
-            border: 1px solid #1e293b;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .social-link.tg { color: #38bdf8; }
-        .social-link.tg:hover { border-color: #38bdf8; }
-        .social-link.ig { color: #f43f5e; }
-        .social-link.ig:hover { border-color: #f43f5e; }
-        
-        .social-link.team-site { 
-            color: #ffffff; 
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-        .social-link.team-site:hover { border-color: rgba(255, 255, 255, 0.4); }
-        .social-link.team-site img {
-            width: 25px; 
-            height: 25px;
-            object-fit: contain;
-        }
-
-        @media (max-width: 650px) {
-            body { padding: 15px 12px 30px 12px; }
-            .boxed-header-container { height: 210px; border-radius: 16px; margin-bottom: 20px; width: 100%; }
-            .header-main-logo { max-width: 100px; }
-            .slogan { font-size: 1.05rem; }
-            .warning { font-size: 0.75rem; padding: 4px 14px; }
-            .tabs-container { gap: 6px; justify-content: center; margin-bottom: 15px; }
-            .tab-btn { padding: 8px 14px; font-size: 0.8rem; border-radius: 10px; gap: 5px; }
-            .search-container { margin-bottom: 20px; width: 100%; }
-            .audio-list { grid-template-columns: 1fr; gap: 14px; width: 100%; }
-            .status-message { grid-column: span 1; }
-            .audio-dates-inline { padding-right: 0; }
-
-            .footer-socials { gap: 8px; }
-            .social-link { padding: 8px 6px; font-size: 0.78rem; gap: 4px; }
-            .social-link.team-site img { width: 18px; height: 18px; }
-        }
-    </style>
-
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "fad2f372-1b1f-4593-803e-d56e9004630b",
-      path: "/VocalAGroans/",
-      notifyButton: {
-        enable: true,
-        colors: {
-          'circle.background': 'rgb(56, 189, 248)',
-          'circle.foreground': 'white',
-        }
-      }
-    });
-  });
-</script>
-    
+    @media (max-width:650px) {
+      .audio-list { grid-template-columns: 1fr; }
+      .boxed-header-container { height:210px; border-radius:16px; margin-bottom:20px; }
+      .header-main-logo { max-width:100px; }
+    }
+  </style>
 </head>
-<body oncontextmenu="return false;">
 
-<div class="container">
+<body oncontextmenu="return false;">
+  <div class="container">
     <div class="boxed-header-container" ondragstart="return false;">
-        <!-- الشعار مع كتابة للترويسة الرئيسية -->
-        <img src="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/refs/heads/main/T401783227614594.png" alt="شعار آهات صوتية" class="header-main-logo">[cite: 2]
-        <div class="slogan">سمعك بلا ضجيج</div>
-        <div class="warning">جميع الملفات الصوتية خالية من الموسيقى 🚫</div>
+      <img src="https://raw.githubusercontent.com/sdkd2039/VocalAGroans/main/T401783227614594.png" alt="شعار آهات صوتية" class="header-main-logo" draggable="false">
+      <div class="slogan">سمعك بلا ضجيج</div>
+      <div class="warning">جميع الملفات الصوتية خالية من الموسيقى 🚫</div>
     </div>
 
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('all', this)"><i class="fa-solid fa-bolt"></i> اقتراحات لك</button>
-        <button class="tab-btn" onclick="switchTab('آهات', this)"><i class="fa-solid fa-music"></i> آهات</button>
-        <button class="tab-btn" onclick="switchTab('مؤثرات', this)"><i class="fa-solid fa-wand-magic-sparkles"></i> مؤثرات</button>
-        <button class="tab-btn" onclick="switchTab('انتقالات', this)"><i class="fa-solid fa-arrow-right-arrow-left"></i> انتقالات</button>
-        <button class="tab-btn" onclick="switchTab('صوت', this)"><i class="fa-solid fa-microphone"></i> صوت</button>
-        <button class="tab-btn" onclick="switchTab('favorites', this)">
-            <i class="fa-solid fa-heart"></i> المفضلة 
-            <span id="favBadge" class="fav-badge">0</span>
-        </button>
+      <button class="tab-btn active" onclick="switchTab('all', this)"><i class="fa-solid fa-bolt"></i> اقتراحات لك</button>
+      <button class="tab-btn" onclick="switchTab('آهات', this)"><i class="fa-solid fa-music"></i> آهات</button>
+      <button class="tab-btn" onclick="switchTab('مؤثرات', this)"><i class="fa-solid fa-wand-magic-sparkles"></i> مؤثرات</button>
+      <button class="tab-btn" onclick="switchTab('انتقالات', this)"><i class="fa-solid fa-arrow-right-arrow-left"></i> انتقالات</button>
+      <button class="tab-btn" onclick="switchTab('صوت', this)"><i class="fa-solid fa-microphone"></i> صوت</button>
+      <button class="tab-btn" onclick="switchTab('favorites', this)">
+        <i class="fa-solid fa-heart"></i> المفضلة
+        <span id="favBadge" class="fav-badge" style="display:none;">0</span>
+      </button>
     </div>
 
     <div class="search-container">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن مؤثرات، انتقالات، أو آهات..." oninput="filterAndSearchAudio()">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن مؤثرات، انتقالات، أو آهات..." oninput="filterAndSearchAudio()">
     </div>
 
     <div id="audioContainer" class="audio-list">
-        <div class="status-message" id="statusMessage"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب البيانات...</div>
+      <div class="status-message" id="statusMessage"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب البيانات...</div>
     </div>
-</div>
+  </div>
 
-<footer class="footer">
+  <footer class="footer">
     <div class="footer-rights">
-        جميع الحقوق محفوظة ©<br>
-        1448 هـ - 2026 م
+      جميع الحقوق محفوظة ©<br>1448 هـ - 2026 م
     </div>
     <div class="footer-socials">
-        <a href="https://t.me/VocalAGroans" target="_blank" class="social-link tg">
-            <i class="fa-brands fa-telegram"></i> تليجرام
-        </a>
-        <a href="https://sites.google.com/view/almajdsolah/Home" target="_blank" class="social-link team-site">
-            <img src="https://files.catbox.moe/piew3s.png" alt="شعار موقع الفريق" ondragstart="return false;"> موقع الفريق
-        </a>
-        <a href="https://www.instagram.com/vocalagroans" target="_blank" class="social-link ig">
-            <i class="fa-brands fa-instagram"></i> انستقرام
-        </a>
+      <a href="https://t.me/VocalAGroans" target="_blank" class="social-link" rel="noopener noreferrer"><i class="fa-brands fa-telegram"></i> تليجرام</a>
+      <a href="https://sites.google.com/view/almajdsolah/Home" target="_blank" class="social-link" rel="noopener noreferrer">
+        <img src="https://files.catbox.moe/piew3s.png" alt="شعار موقع الفريق" style="width:25px;height:25px;object-fit:contain;margin-inline-end:6px;" draggable="false">موقع الفريق
+      </a>
+      <a href="https://www.instagram.com/vocalagroans" target="_blank" class="social-link" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i> انستقرام</a>
     </div>
-</footer>
+  </footer>
 
-<script>
+  <!-- OneSignal (deferred init) -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "fad2f372-1b1f-4593-803e-d56e9004630b",
+        path: "/VocalAGroans/",
+        notifyButton: { enable: true, colors: { 'circle.background': 'rgb(56,189,248)', 'circle.foreground': 'white' } }
+      });
+    });
+  </script>
+
+  <script>
+    // Configuration
     const sheetId = '1mvsDJJRJuiDg1s45KwJw7x6dnodiPZck8WNAFz_C8tU';
-    
-    let categoriesData = { 'آهات': [], 'مؤثرات': [], 'انتقالات': [], 'صوت': [] };
-    let randomAllAudio = []; 
-    let activePlayers = {};
-    let currentTab = 'all'; 
-    let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2')) || [];
 
+    // State
+    let categoriesData = { 'آهات': [], 'مؤثرات': [], 'انتقالات': [], 'صوت': [] };
+    let randomAllAudio = [];
+    let activePlayers = {};
+    let currentTab = 'all';
+    let favoritesList = JSON.parse(localStorage.getItem('vocal_favs_v2') || '[]');
+
+    // Service worker registration (optional)
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed: ', err));
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker?.register('sw.js').catch(err => console.log('SW registration failed:', err));
+      });
     }
 
+    // Utility: stable id generator for audio URLs
     function generateCleanId(url) {
-        if (!url) return 'audio-' + Math.random().toString(36).substr(2, 9);
-        let cleaned = url.trim().toLowerCase();
-        let hash = 0;
-        for (let i = 0; i < cleaned.length; i++) {
-            let char = cleaned.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash |= 0;
-        }
-        return 'audio-' + Math.abs(hash);
+      if (!url) return 'audio-' + Math.random().toString(36).substr(2,9);
+      let cleaned = url.trim().toLowerCase();
+      let hash = 0;
+      for (let i = 0; i < cleaned.length; i++) {
+        hash = ((hash << 5) - hash) + cleaned.charCodeAt(i);
+        hash |= 0;
+      }
+      return 'audio-' + Math.abs(hash);
     }
 
     function updateFavBadge() {
-        const badge = document.getElementById('favBadge');
-        if (badge) {
-            badge.textContent = favoritesList.length;
-            badge.style.display = favoritesList.length === 0 ? 'none' : 'inline-flex';
-        }
+      const badge = document.getElementById('favBadge');
+      if (!badge) return;
+      badge.textContent = favoritesList.length;
+      badge.style.display = favoritesList.length === 0 ? 'none' : 'inline-flex';
     }
 
     async function fetchSheetData(sheetName) {
-        try {
-            const queryUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${encodeURIComponent(sheetName)}&tqx=out:json&headers=0&cacheBust=${Date.now()}`;
-            const res = await fetch(queryUrl);
-            const text = await res.text();
-            const json = JSON.parse(text.substr(47).slice(0, -2));
-            const rows = json.table.rows; 
-
-            return rows.map((row) => {
-                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
-                const url = row.c[1] ? row.c[1].v : ''; 
-                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
-                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
-                const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
-                const uniqueId = generateCleanId(url);
-                
-                return { id: uniqueId, title, url, desc, dateAdded, downloadUrl, category: sheetName };
-            }).filter(item => item.url !== '' && item.url.startsWith('http'));
-        } catch (err) {
-            console.error(`خطأ في ورقة: ${sheetName}`, err);
-            return [];
-        }
+      try {
+        const queryUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${encodeURIComponent(sheetName)}&tqx=out:json&headers=0&cacheBust=${Date.now()}`;
+        const res = await fetch(queryUrl);
+        const text = await res.text();
+        const json = JSON.parse(text.substr(47).slice(0, -2));
+        const rows = json.table.rows || [];
+        return rows.map(row => {
+          const title = row.c[0] ? row.c[0].v : 'بدون عنوان';
+          const url = row.c[1] ? row.c[1].v : '';
+          const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي';
+          const dateAdded = row.c[3] ? (row.c[3].f || row.c[3].v) : '';
+          const downloadUrl = (row.c[5] && row.c[5].v) ? row.c[5].v : url;
+          const id = generateCleanId(url);
+          return { id, title, url, desc, dateAdded, downloadUrl, category: sheetName };
+        }).filter(item => item.url && item.url.startsWith('http'));
+      } catch (err) {
+        console.error('Error fetching sheet', sheetName, err);
+        return [];
+      }
     }
 
     async function fetchAllSheetsData() {
-        try {
-            categoriesData['آهات'] = (await fetchSheetData('آهات')).reverse();
-            categoriesData['مؤثرات'] = (await fetchSheetData('مؤثرات')).reverse();
-            categoriesData['انتقالات'] = (await fetchSheetData('انتقالات')).reverse();
-            categoriesData['صوت'] = (await fetchSheetData('صوت')).reverse();
+      try {
+        document.getElementById('statusMessage').textContent = 'جاري جلب البيانات...';
+        categoriesData['آهات'] = (await fetchSheetData('آهات')).reverse();
+        categoriesData['مؤثرات'] = (await fetchSheetData('مؤثرات')).reverse();
+        categoriesData['انتقالات'] = (await fetchSheetData('انتقالات')).reverse();
+        categoriesData['صوت'] = (await fetchSheetData('صوت')).reverse();
 
-            let pool = [
-                ...categoriesData['آهات'],
-                ...categoriesData['مؤثرات'],
-                ...categoriesData['انتقالات'],
-                ...categoriesData['صوت']
-            ];
+        let pool = [
+          ...categoriesData['آهات'],
+          ...categoriesData['مؤثرات'],
+          ...categoriesData['انتقالات'],
+          ...categoriesData['صوت']
+        ];
 
-            let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.id, item));
-            let uniquePool = Array.from(uniquePoolMap.values());
+        // Deduplicate by id
+        const uniqueMap = new Map();
+        pool.forEach(item => uniqueMap.set(item.id, item));
+        const uniquePool = Array.from(uniqueMap.values());
+        // pick random subset for 'all' tab
+        const shuffled = uniquePool.sort(() => Math.random() - 0.5);
+        randomAllAudio = shuffled.slice(0, 6);
 
-            let shuffledPool = uniquePool.sort(() => Math.random() - 0.5);
-            randomAllAudio = shuffledPool.slice(0, 6);
-
-            updateFavBadge();
-            renderAudioCards();
-            checkUrlHashForAudio(uniquePool);
-        } catch (err) {
-            document.getElementById('statusMessage').innerHTML = 'حدث خطأ أثناء تحميل الملفات الصوتية.';
-            console.error(err);
-        }
+        updateFavBadge();
+        renderAudioCards();
+        checkUrlHashForAudio(uniquePool);
+      } catch (err) {
+        console.error(err);
+        const container = document.getElementById('audioContainer');
+        container.innerHTML = '<div class="status-message">حدث خطأ أثناء تحميل الملفات الصوتية.</div>';
+      }
     }
 
-    function switchTab(tabName, buttonEl) {
-        currentTab = tabName;
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        buttonEl.classList.add('active');
+    function switchTab(tabName, btnEl) {
+      currentTab = tabName;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
 
-        if (tabName === 'all') {
-            let pool = [
-                ...categoriesData['آهات'],
-                ...categoriesData['مؤثرات'],
-                ...categoriesData['انتقالات'],
-                ...categoriesData['صوت']
-            ];
-            let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.id, item));
-            let uniquePool = Array.from(uniquePoolMap.values());
-            let shuffledPool = uniquePool.sort(() => Math.random() - 0.5);
-            randomAllAudio = shuffledPool.slice(0, 6);
-        }
+      if (tabName === 'all') {
+        let pool = [
+          ...categoriesData['آهات'],
+          ...categoriesData['مؤثرات'],
+          ...categoriesData['انتقالات'],
+          ...categoriesData['صوت']
+        ];
+        const uniqueMap = new Map();
+        pool.forEach(item => uniqueMap.set(item.id, item));
+        const uniquePool = Array.from(uniqueMap.values());
+        randomAllAudio = uniquePool.sort(() => Math.random() - 0.5).slice(0, 6);
+      }
 
-        renderAudioCards();
+      renderAudioCards();
     }
 
     function toggleFavorite(id) {
-        if (favoritesList.includes(id)) {
-            favoritesList = favoritesList.filter(favId => favId !== id);
-        } else {
-            favoritesList.push(id);
-        }
-        
-        localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
-        updateFavBadge();
-        
-        if (currentTab === 'favorites') {
-            renderAudioCards();
-        } else {
-            const favBtns = document.querySelectorAll(`[data-fav-id="${id}"]`);
-            const isFav = favoritesList.includes(id);
-            favBtns.forEach(btn => {
-                btn.classList.toggle('is-fav', isFav);
-                const iconEl = btn.querySelector('i');
-                if (iconEl) {
-                    iconEl.className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-                }
-            });
-        }
+      if (!id) return;
+      if (favoritesList.includes(id)) {
+        favoritesList = favoritesList.filter(x => x !== id);
+      } else {
+        favoritesList.push(id);
+      }
+      localStorage.setItem('vocal_favs_v2', JSON.stringify(favoritesList));
+      updateFavBadge();
+      renderAudioCards();
     }
 
     function shareAudio(title, audioId) {
-        const baseUrl = window.location.href.split('#')[0].split('?')[0];
-        const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
-
-        const shareData = {
-            title: 'آهات صوتية',
-            text: `استمع إلى المؤثر الصوتي: ${title}`,
-            url: siteAudioUrl
-        };
-
-        if (navigator.share) {
-            navigator.share(shareData).catch(() => {});
-        } else {
-            navigator.clipboard.writeText(siteAudioUrl).then(() => {
-                alert('تم نسخ رابط الموقع الخاص بالصوت إلى الحافظة بنجاح!');
-            }).catch(() => {
-                alert('تعذر نسخ الرابط.');
-            });
-        }
+      const baseUrl = window.location.href.split('#')[0].split('?')[0];
+      const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
+      const shareData = { title: 'آهات صوتية', text: `استمع إلى المؤثر الصوتي: ${title}`, url: siteAudioUrl };
+      if (navigator.share) {
+        navigator.share(shareData).catch(()=>{});
+      } else {
+        navigator.clipboard.writeText(siteAudioUrl).then(() => alert('تم نسخ رابط الموقع الخاص بالصوت إلى الحافظة بنجاح!')).catch(() => alert('تعذر نسخ الرابط.'));
+      }
     }
 
     function checkUrlHashForAudio(allPool) {
-        const hash = window.location.hash;
-        if (hash && hash.includes('audio=')) {
-            const targetId = hash.split('audio=')[1];
-            const targetItem = allPool.find(item => item.id === targetId);
-            
-            if (targetItem) {
-                let targetCategory = targetItem.category;
-                const tabButton = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.textContent.includes(targetCategory));
-                if (tabButton) {
-                    switchTab(targetCategory, tabButton);
-                }
-
-                setTimeout(() => {
-                    const cardElement = document.getElementById(`card-${targetId}`);
-                    if (cardElement) {
-                        cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        cardElement.style.border = '2px solid var(--primary-color)';
-                        setTimeout(() => {
-                            togglePlay(targetItem.id, targetItem.url);
-                        }, 500);
-                    }
-                }, 300);
+      const hash = window.location.hash;
+      if (hash && hash.includes('audio=')) {
+        const targetId = hash.split('audio=')[1];
+        const targetItem = allPool.find(i => i.id === targetId);
+        if (targetItem) {
+          const tabBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.includes(targetItem.category));
+          if (tabBtn) switchTab(targetItem.category, tabBtn);
+          setTimeout(() => {
+            const card = document.getElementById(`card-${targetId}`);
+            if (card) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              card.style.border = '2px solid var(--primary-color)';
+              setTimeout(() => togglePlay(targetItem.id, targetItem.url), 500);
             }
+          }, 300);
         }
+      }
     }
 
     function renderAudioCards() {
-        const container = document.getElementById('audioContainer');
-        container.innerHTML = '';
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const container = document.getElementById('audioContainer');
+      container.innerHTML = '';
+      const searchTerm = (document.getElementById('searchInput').value || '').toLowerCase().trim();
 
-        let listToRender = [];
+      let listToRender = [];
 
-        if (currentTab === 'all') {
-            listToRender = [...randomAllAudio]; 
-        } else if (currentTab === 'favorites') {
-            let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
-            let uniquePoolMap = new Map();
-            pool.forEach(item => uniquePoolMap.set(item.id, item));
-            
-            listToRender = [...favoritesList]
-                .map(favId => uniquePoolMap.get(favId))
-                .filter(Boolean)
-                .reverse();
+      if (currentTab === 'all') {
+        listToRender = [...randomAllAudio];
+      } else if (currentTab === 'favorites') {
+        let pool = [...categoriesData['آهات'], ...categoriesData['مؤثرات'], ...categoriesData['انتقالات'], ...categoriesData['صوت']];
+        const map = new Map(); pool.forEach(i => map.set(i.id, i));
+        listToRender = favoritesList.map(id => map.get(id)).filter(Boolean).reverse();
+      } else {
+        listToRender = [...(categoriesData[currentTab] || [])];
+      }
+
+      const filtered = listToRender.filter(item => {
+        return item.title.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm);
+      });
+
+      if (filtered.length === 0) {
+        if (currentTab === 'favorites') {
+          container.innerHTML = `<div class="status-message">قائمة المفضلة فارغة حالياً. اضغط على القلب لإضافة الصوتيات هنا!</div>`;
         } else {
-            listToRender = [...categoriesData[currentTab]];
+          container.innerHTML = `<div class="status-message">لا توجد نتائج مطابقة لبحثك في هذا القسم.</div>`;
         }
+        return;
+      }
 
-        let filtered = listToRender.filter(item => {
-            return item.title.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm);
-        });
+      const frag = document.createDocumentFragment();
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'audio-card';
+        card.id = `card-${item.id}`;
+        const safeTitle = item.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const isFav = favoritesList.includes(item.id) ? 'is-fav' : '';
+        const favIcon = favoritesList.includes(item.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+        const isPlaying = activePlayers[item.id] && !activePlayers[item.id].audio.paused;
+        const playIconClass = isPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+        const datesHtml = item.dateAdded ? `<div class="audio-dates-inline"><div class="date-item added" title="تاريخ الإضافة"><i class="fa-regular fa-calendar"></i> <span>أضيف: ${item.dateAdded}</span></div></div>` : '';
 
-        if (filtered.length === 0) {
-            if (currentTab === 'favorites') {
-                container.innerHTML = `<div class="status-message">قائمة المفضلة فارغة حالياً. اضغط على القلب لإضافة الصوتيات هنا!</div>`;
-            } else {
-                container.innerHTML = `<div class="status-message">لا توجد نتائج مطابقة لبحثك في هذا القسم.</div>`;
-            }
-            return;
-        }
-
-        const fragment = document.createDocumentFragment();
-
-        filtered.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'audio-card';
-            card.id = `card-${item.id}`;
-            const safeTitle = item.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-            const isFav = favoritesList.includes(item.id) ? 'is-fav' : '';
-            const favIcon = favoritesList.includes(item.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-            
-            const isPlayingNow = activePlayers[item.id] && !activePlayers[item.id].audio.paused;
-            const playIconClass = isPlayingNow ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-
-            let datesHtml = '';
-            if (item.dateAdded) {
-                datesHtml = `<div class="audio-dates-inline">
-                    <div class="date-item added" title="تاريخ الإضافة"><i class="fa-regular fa-calendar"></i> <span>أضيف: ${item.dateAdded}</span></div>
-                </div>`;
-            }
-            
-            card.innerHTML = `
-                <div class="audio-layout-top">
-                    <div class="audio-main-content">
-                        <div class="music-note-icon"><i class="fa-solid fa-music"></i></div>
-                        <div class="audio-info-block">
-                            <div class="audio-title">${item.title}</div>
-                            <div class="audio-desc-container">
-                                <span class="desc-label">الوصف:</span>
-                                <span class="desc-value">${item.desc}</span>
-                            </div>
-                        </div>
-                    </div>
-                    ${datesHtml}
+        card.innerHTML = `
+          <div class="audio-layout-top">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div class="music-note-icon"><i class="fa-solid fa-music"></i></div>
+              <div style="flex:1;min-width:0;">
+                <div class="audio-title">${item.title}</div>
+                <div style="font-size:0.8rem;font-weight:500;color:var(--desc-text-color);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  <span style="color:var(--primary-color);font-weight:700;margin-inline-start:4px;">الوصف:</span>
+                  <span>${item.desc}</span>
                 </div>
-                <div class="player-controls-container">
-                    <div class="timeline-container">
-                        <div class="timeline" id="timeline-${item.id}" onmousedown="startSeek(event, '${item.id}')" ontouchstart="startSeek(event, '${item.id}')">
-                            <div class="progress-bar" id="progress-${item.id}"></div>
-                        </div>
-                        <div class="time-labels">
-                            <span id="current-${item.id}">00:00</span>
-                            <span id="duration-${item.id}">00:00</span>
-                        </div>
-                    </div>
-                    <div class="buttons-row">
-                        <button class="control-btn btn-play-pause" onclick="togglePlay('${item.id}', '${item.url}')">
-                            <i class="${playIconClass}" id="icon-${item.id}"></i>
-                        </button>
-                        <div class="control-left-group">
-                            <button class="control-btn btn-share-action" title="مشاركة أو نسخ رابط الموقع للصوت" onclick="shareAudio('${safeTitle}', '${item.id}')">
-                                <i class="fa-solid fa-share-nodes"></i>
-                            </button>
-                            <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')">
-                                <i class="${favIcon}"></i>
-                            </button>
-                            <button class="control-btn btn-loop-toggle ${activePlayers[item.id] && activePlayers[item.id].audio.loop ? 'is-looping' : ''}" id="loop-${item.id}" onclick="toggleLoop('${item.id}')">
-                                <i class="fa-solid fa-repeat"></i>
-                            </button>
-                            <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" onclick="downloadAudio(this)">
-                                <i class="fa-solid fa-download"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            fragment.appendChild(card);
-        });
+              </div>
+            </div>
+            ${datesHtml}
+          </div>
+          <div class="player-controls-container">
+            <div class="timeline-container">
+              <div class="timeline" id="timeline-${item.id}" onmousedown="startSeek(event,'${item.id}')" ontouchstart="startSeek(event,'${item.id}')">
+                <div class="progress-bar" id="progress-${item.id}"></div>
+              </div>
+              <div class="time-labels">
+                <span id="current-${item.id}">00:00</span>
+                <span id="duration-${item.id}">00:00</span>
+              </div>
+            </div>
+            <div class="buttons-row">
+              <button class="control-btn btn-play-pause" onclick="togglePlay('${item.id}','${item.url.replace(/'/g,"\\'")}')">
+                <i class="${playIconClass}" id="icon-${item.id}"></i>
+              </button>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <button class="control-btn btn-share-action" title="مشاركة أو نسخ رابط الموقع للصوت" onclick="shareAudio('${safeTitle}','${item.id}')"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="control-btn btn-fav-toggle ${isFav}" data-fav-id="${item.id}" title="إضافة للمفضلة" onclick="toggleFavorite('${item.id}')"><i class="${favIcon}"></i></button>
+                <button class="control-btn btn-loop-toggle ${activePlayers[item.id] && activePlayers[item.id].audio.loop ? 'is-looping' : ''}" id="loop-${item.id}" onclick="toggleLoop('${item.id}')"><i class="fa-solid fa-repeat"></i></button>
+                <button class="control-btn btn-download-action" data-url="${item.downloadUrl}" data-title="${safeTitle}" onclick="downloadAudio(this)"><i class="fa-solid fa-download"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+        frag.appendChild(card);
+      });
 
-        container.appendChild(fragment);
+      container.appendChild(frag);
 
-        Object.keys(activePlayers).forEach(id => {
-            if (document.getElementById(`progress-${id}`)) {
-                setupAudioEvents(id);
-            }
-        });
+      // attach events for already active players
+      Object.keys(activePlayers).forEach(id => {
+        if (document.getElementById(`progress-${id}`)) setupAudioEvents(id);
+      });
     }
 
     function setupAudioEvents(id) {
-        const playerObj = activePlayers[id];
-        if (!playerObj) return;
+      const player = activePlayers[id];
+      if (!player) return;
+      const audio = player.audio;
+      const progressBar = document.getElementById(`progress-${id}`);
+      const currentTxt = document.getElementById(`current-${id}`);
+      const durationTxt = document.getElementById(`duration-${id}`);
+      const icon = document.getElementById(`icon-${id}`);
 
-        const audio = playerObj.audio;
-        const progressBar = document.getElementById(`progress-${id}`);
-        const currentTxt = document.getElementById(`current-${id}`);
-        const durationTxt = document.getElementById(`duration-${id}`);
-        const icon = document.getElementById(`icon-${id}`);
-
-        audio.ontimeupdate = () => {
-            if (audio.duration) {
-                const percentage = (audio.currentTime / audio.duration) * 100;
-                if (progressBar) progressBar.style.width = percentage + '%';
-                if (currentTxt) currentTxt.textContent = formatTime(audio.currentTime);
-            }
-        };
-
+      audio.ontimeupdate = () => {
         if (audio.duration) {
-            if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
+          const pct = (audio.currentTime / audio.duration) * 100;
+          if (progressBar) progressBar.style.width = pct + '%';
+          if (currentTxt) currentTxt.textContent = formatTime(audio.currentTime);
         }
+      };
 
-        audio.onloadedmetadata = () => {
-            if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
-        };
+      audio.onloadedmetadata = () => {
+        if (durationTxt) durationTxt.textContent = formatTime(audio.duration);
+      };
 
-        audio.onended = () => {
-            if (!audio.loop) {
-                if (icon) icon.className = 'fa-solid fa-play';
-                if (progressBar) progressBar.style.width = '0%';
-                if (currentTxt) currentTxt.textContent = '00:00';
-            }
-        };
+      audio.onended = () => {
+        if (!audio.loop) {
+          if (icon) icon.className = 'fa-solid fa-play';
+          if (progressBar) progressBar.style.width = '0%';
+          if (currentTxt) currentTxt.textContent = '00:00';
+        }
+      };
     }
 
     function togglePlay(id, url) {
-        const icon = document.getElementById(`icon-${id}`);
-        
-        if (!activePlayers[id]) {
-            activePlayers[id] = { audio: new Audio(url) };
-            activePlayers[id].audio.preload = "metadata";
+      const icon = document.getElementById(`icon-${id}`);
+      if (!activePlayers[id]) {
+        activePlayers[id] = { audio: new Audio(url) };
+        activePlayers[id].audio.preload = 'metadata';
+      }
+      const audio = activePlayers[id].audio;
+
+      // pause others
+      Object.keys(activePlayers).forEach(k => {
+        if (k !== id && !activePlayers[k].audio.paused) {
+          activePlayers[k].audio.pause();
+          const otherIcon = document.getElementById(`icon-${k}`);
+          if (otherIcon) otherIcon.className = 'fa-solid fa-play';
         }
+      });
 
-        const audio = activePlayers[id].audio;
+      setupAudioEvents(id);
 
-        Object.keys(activePlayers).forEach(key => {
-            if (key !== id && !activePlayers[key].audio.paused) {
-                activePlayers[key].audio.pause();
-                const otherIcon = document.getElementById(`icon-${key}`);
-                if (otherIcon) otherIcon.className = 'fa-solid fa-play';
-            }
-        });
-
-        setupAudioEvents(id);
-
-        if (audio.paused) {
-            audio.play().then(() => {
-                if (icon) icon.className = 'fa-solid fa-pause';
-            }).catch(err => console.error(err));
-        } else {
-            audio.pause();
-            if (icon) icon.className = 'fa-solid fa-play';
-        }
+      if (audio.paused) {
+        audio.play().then(() => {
+          if (icon) icon.className = 'fa-solid fa-pause';
+        }).catch(err => console.error(err));
+      } else {
+        audio.pause();
+        if (icon) icon.className = 'fa-solid fa-play';
+      }
     }
 
+    // Seeking logic
     let isDragging = false;
-    let currentActiveId = null;
+    let currentSeekId = null;
 
     function startSeek(e, id) {
-        isDragging = true;
-        currentActiveId = id;
-        processSeek(e, id);
-        window.addEventListener('mousemove', handleGlobalMove);
-        window.addEventListener('touchmove', handleGlobalMove, { passive: false });
-        window.addEventListener('mouseup', stopSeek);
-        window.addEventListener('touchend', stopSeek);
+      isDragging = true;
+      currentSeekId = id;
+      processSeek(e, id);
+      window.addEventListener('mousemove', handleGlobalMove);
+      window.addEventListener('touchmove', handleGlobalMove, { passive: false });
+      window.addEventListener('mouseup', stopSeek);
+      window.addEventListener('touchend', stopSeek);
     }
 
     function handleGlobalMove(e) {
-        if (!isDragging || !currentActiveId) return;
-        if (e.type === 'touchmove') e.preventDefault(); 
-        processSeek(e, currentActiveId);
+      if (!isDragging || !currentSeekId) return;
+      if (e.type === 'touchmove') e.preventDefault();
+      processSeek(e, currentSeekId);
     }
 
     function processSeek(e, id) {
-        if (!activePlayers[id]) return;
-        const audio = activePlayers[id].audio;
-        const timeline = document.getElementById('timeline-' + id);
-        if (!timeline) return;
-        
-        const rect = timeline.getBoundingClientRect();
-        let clientX;
-        if (e.touches && e.touches.length > 0) clientX = e.touches[0].clientX;
-        else if (e.changedTouches && e.changedTouches.length > 0) clientX = e.changedTouches[0].clientX;
-        else clientX = e.clientX;
-        
-        const width = rect.width;
-        const clickXFromRight = rect.right - clientX;
-        
-        if (width > 0) {
-            const percent = Math.min(Math.max(0, clickXFromRight / width), 1);
-            const progressBar = document.getElementById('progress-' + id);
-            if (progressBar) progressBar.style.width = (percent * 100) + '%';
-            const currentTxt = document.getElementById('current-' + id);
-            if (currentTxt && audio.duration) currentTxt.textContent = formatTime(percent * audio.duration);
-            if (audio.duration) audio.currentTime = percent * audio.duration;
-        }
+      const player = activePlayers[id];
+      if (!player) return;
+      const audio = player.audio;
+      const timeline = document.getElementById('timeline-' + id);
+      if (!timeline || !audio) return;
+      const rect = timeline.getBoundingClientRect();
+      const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      let pct = (clientX - rect.left) / rect.width;
+      pct = Math.max(0, Math.min(1, pct));
+      if (audio.duration) audio.currentTime = pct * audio.duration;
+      const progress = document.getElementById('progress-' + id);
+      if (progress) progress.style.width = (pct * 100) + '%';
     }
 
     function stopSeek() {
-        isDragging = false;
-        currentActiveId = null;
-        window.removeEventListener('mousemove', handleGlobalMove);
-        window.removeEventListener('touchmove', handleGlobalMove);
-        window.removeEventListener('mouseup', stopSeek);
-        window.removeEventListener('touchend', stopSeek);
+      isDragging = false;
+      currentSeekId = null;
+      window.removeEventListener('mousemove', handleGlobalMove);
+      window.removeEventListener('touchmove', handleGlobalMove);
+      window.removeEventListener('mouseup', stopSeek);
+      window.removeEventListener('touchend', stopSeek);
     }
 
     function toggleLoop(id) {
-        if (!activePlayers[id]) return;
-        const audio = activePlayers[id].audio;
-        audio.loop = !audio.loop;
-        const loopBtn = document.getElementById('loop-' + id);
-        if (loopBtn) loopBtn.classList.toggle('is-looping', audio.loop);
-    }
-
-    function filterAndSearchAudio() {
-        renderAudioCards();
+      if (!activePlayers[id]) {
+        // create audio but don't autoplay
+        const el = document.querySelector(`[data-fav-id="${id}"]`) || document.getElementById(`loop-${id}`);
+        activePlayers[id] = { audio: new Audio() };
+      }
+      const audio = activePlayers[id].audio;
+      audio.loop = !audio.loop;
+      const btn = document.getElementById(`loop-${id}`);
+      if (btn) btn.classList.toggle('is-looping', audio.loop);
     }
 
     function downloadAudio(btn) {
-        const url = btn.getAttribute('data-url');
-        const title = btn.getAttribute('data-title');
-        const originalContent = btn.innerHTML;
-        
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
-        btn.disabled = true;
-        
-        const extension = url.split('.').pop().split(/[?#]/)[0] || 'zip';
-        
-        fetch(url)
-            .then(response => response.blob())
-            .then(blob => {
-                const blobUrl = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = `${title}.${extension}`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(blobUrl);
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            })
-            .catch(() => {
-                alert('فشل تحميل الملف، يرجى المحاولة لاحقاً.');
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            });
+      const url = btn.getAttribute('data-url');
+      const title = btn.getAttribute('data-title') || 'audio';
+      if (!url) return;
+      // attempt to download via anchor
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
 
     function formatTime(seconds) {
-        if (isNaN(seconds) || !isFinite(seconds)) return "00:00";
-        let min = Math.floor(seconds / 60);
-        let sec = Math.floor(seconds % 60);
-        if (sec < 10) sec = '0' + sec;
-        return min + ':' + sec;
+      if (!seconds || isNaN(seconds)) return '00:00';
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
     }
 
-    window.onload = fetchAllSheetsData;
-</script>
+    function filterAndSearchAudio() {
+      renderAudioCards();
+    }
 
+    // Initialize
+    updateFavBadge();
+    fetchAllSheetsData();
+
+    // If user presses Enter in search, keep focus nice
+    document.getElementById('searchInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') e.preventDefault();
+    });
+  </script>
 </body>
 </html>
