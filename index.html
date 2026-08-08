@@ -17,7 +17,7 @@
     <!-- تم تصحيح حروف og لتكون صغيرة لتعمل بشكل صحيح مع أنظمة المشاركة -->
     <meta property="og:title" content="آهات صوتية - سمعك بلا ضجيج">
     <meta property="og:description" content="تصفح واستمع إلى أجمل الآهات والمؤثرات الصوتية الخالية من الموسيقى.">
-    <meta property="og:image" content="">
+    <meta property="og:image" content="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png">
     <meta property="og:url" content="https://sdkd2039.github.io/VocalAGroans/">
 
     <link rel="icon" type="image/png" href="https://file.garden/aluU_B9tLXBUY8kP/%D8%B4%D8%B9%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1/T401785315620882.png">
@@ -277,7 +277,7 @@
         .audio-info-block {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px; /* مسافة قريبة جداً للعنوان بناءً على طلبك */
             flex: 1;
             min-width: 0;
         }
@@ -749,6 +749,23 @@
         }
     }
 
+    function fallbackCopyText(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            alert('تم نسخ الرابط بنجاح!');
+        } catch (err) {
+            alert('تعذر النسخ التلقائي، يرجى تحديده يدوياً.');
+        }
+        document.body.removeChild(textArea);
+    }
+
     function shareAudio(title, audioId) {
         const baseUrl = window.location.href.split('#')[0].split('?')[0];
         const siteAudioUrl = `${baseUrl}#audio=${audioId}`;
@@ -762,11 +779,16 @@
         if (navigator.share) {
             navigator.share(shareData).catch(() => {});
         } else {
-            navigator.clipboard.writeText(siteAudioUrl).then(() => {
-                alert('تم نسخ رابط الموقع الخاص بالصوت إلى الحافظة بنجاح!');
-            }).catch(() => {
-                alert('تعذر نسخ الرابط.');
-            });
+            const textToCopy = `استمع إلى المؤثر الصوتي: ${title}\n${siteAudioUrl}`;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert('تم نسخ الرابط بنجاح!');
+                }).catch(() => {
+                    fallbackCopyText(textToCopy);
+                });
+            } else {
+                fallbackCopyText(textToCopy);
+            }
         }
     }
 
