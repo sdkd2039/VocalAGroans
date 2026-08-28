@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ايميل القناة | آهات صوتية</title>
+    <title>إرسال بريد إلكتروني | آهات صوتية</title>
     
     <!-- استدعاء الخطوط المطلوبة -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +16,8 @@
             --primary-hover: #4338ca;
             --bg-color: #0f172a;
             --card-bg: #1e293b;
+            --input-bg: #0f172a;
+            --border-color: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent-color: #10b981;
@@ -41,19 +43,17 @@
         .container {
             background-color: var(--card-bg);
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow: hidden; /* لضمان قص أطراف الصورة على حواف البطاقة */
+            border: 1px solid var(--border-color);
+            overflow: hidden;
         }
 
-        /* تنسيق ترويسة الصورة */
+        /* ترويسة الصورة Banner */
         .header-image-container {
             width: 100%;
-            height: auto;
-            max-height: 200px;
+            height: 160px;
             overflow: hidden;
             background-color: rgba(0, 0, 0, 0.2);
         }
@@ -65,61 +65,147 @@
             display: block;
         }
 
-        /* حاوية المحتوى الداخلي */
+        /* نموذج البريد */
         .content {
-            padding: 32px;
+            padding: 24px;
+        }
+
+        .form-header {
+            margin-bottom: 20px;
         }
 
         .title {
             font-family: 'Noto Kufi Arabic', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 12px;
             color: var(--text-main);
+            margin-bottom: 4px;
         }
 
         .subtitle {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 24px;
-            line-height: 1.6;
         }
 
+        .form-group {
+            margin-bottom: 16px;
+            text-align: right;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: 'Estedad', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .form-input[readonly] {
+            color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        /* قسم إضافة الملفات */
+        .file-upload-wrapper {
+            position: relative;
+            background-color: var(--input-bg);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--primary-color);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .file-name-display {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            word-break: break-all;
+        }
+
+        /* مشغل الصوت */
         .audio-wrapper {
             background: rgba(0, 0, 0, 0.2);
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 20px 0 16px 0;
         }
 
         audio {
             width: 100%;
+            height: 36px;
             outline: none;
         }
 
         .status-box {
             display: none;
-            margin-top: 16px;
             margin-bottom: 16px;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             background-color: rgba(16, 185, 129, 0.1);
             color: var(--accent-color);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
+            text-align: center;
         }
 
         .btn {
-            display: inline-block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
             width: 100%;
-            padding: 14px 20px;
+            padding: 12px 20px;
             background-color: var(--primary-color);
             color: #ffffff;
             font-family: 'Estedad', sans-serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            text-decoration: none;
-            border-radius: 10px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.1s ease;
@@ -137,57 +223,119 @@
 <body>
 
     <div class="container">
-        <!-- ترويسة الصورة -->
+        <!-- ترويسة الصورة Banner -->
         <div class="header-image-container">
             <img src="https://files.catbox.moe/yfpo5u.png" alt="ترویسة آهات صوتية" class="header-image">
         </div>
 
-        <!-- المحتوى الرئيسي -->
+        <!-- نموذج إنشاء الرسالة -->
         <div class="content">
-            <h1 class="title">مكتبة آهات صوتية</h1>
-            <p class="subtitle">استمع إلى المقطع الصوتي حتى النهاية ليتم تحويلك تلقائياً للبريد الإلكتروني.</p>
-
-            <div class="audio-wrapper">
-                <!-- قم بتغيير رابط الملف الصوتي حسب اسم وحفظ الملف في مستودعك -->
-                <audio id="audioPlayer" controls>
-                    <source src="audio.mp3" type="audio/mpeg">
-                    متصفحك لا يدعم مشغل الصوتيات.
-                </audio>
+            <div class="form-header">
+                <h1 class="title">إنشاء رسالة إلكترونية</h1>
+                <p class="subtitle">قم بتعبئة نص الرسالة أو الاستماع للمقطع الصوتي للتحويل المباشر.</p>
             </div>
 
-            <div id="statusMessage" class="status-box">
-                تم انتهاء المقطع الصوتي، جاري التحويل للبريد...
-            </div>
+            <form id="emailForm">
+                <!-- المستلم -->
+                <div class="form-group">
+                    <label class="form-label">إلى:</label>
+                    <input type="email" class="form-input" value="almajdayam@gmail.com" readonly>
+                </div>
 
-            <button id="directSendBtn" class="btn">الانتقال المباشر إلى البريد</button>
+                <!-- موضوع الرسالة -->
+                <div class="form-group">
+                    <label for="emailSubject" class="form-label">الموضوع:</label>
+                    <input type="text" id="emailSubject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="تواصل عبر موقع آهات صوتية">
+                </div>
+
+                <!-- نص الرسالة -->
+                <div class="form-group">
+                    <label for="emailBody" class="form-label">محتوى الرسالة:</label>
+                    <textarea id="emailBody" class="form-textarea" placeholder="اكتب نص رسالتك هنا..."></textarea>
+                </div>
+
+                <!-- إرفاق ملفات -->
+                <div class="form-group">
+                    <label class="form-label">إرفاق ملفات (اختياري):</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="fileAttachment" class="file-input" multiple>
+                        <span class="file-label" id="fileLabel">📁 اضغط هنا أو اسحب الملفات لإرفاقها</span>
+                    </div>
+                    <div id="fileNameDisplay" class="file-name-display"></div>
+                </div>
+
+                <!-- مشغل الصوت -->
+                <div class="audio-wrapper">
+                    <audio id="audioPlayer" controls>
+                        <source src="audio.mp3" type="audio/mpeg">
+                        متصفحك لا يدعم مشغل الصوتيات.
+                    </audio>
+                </div>
+
+                <div id="statusMessage" class="status-box">
+                    انتهى المقطع الصوتي! جاري فتح تطبيق البريد...
+                </div>
+
+                <!-- زر الإرسال -->
+                <button type="submit" class="btn">
+                    <span>إرسال الرسالة الإلكترونية</span>
+                </button>
+            </form>
         </div>
     </div>
 
     <script>
-        // تحديد عنصر مشغل الصوت وعنصر التنبيه
+        const emailForm = document.getElementById('emailForm');
+        const emailSubject = document.getElementById('emailSubject');
+        const emailBody = document.getElementById('emailBody');
+        const fileAttachment = document.getElementById('fileAttachment');
+        const fileLabel = document.getElementById('fileLabel');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
         const audioPlayer = document.getElementById('audioPlayer');
         const statusMessage = document.getElementById('statusMessage');
-        const directSendBtn = document.getElementById('directSendBtn');
 
-        // البريد المستهدف
         const targetEmail = 'almajdayam@gmail.com';
 
-        // دالة التوجيه إلى تطبيق البريد
-        function redirectToEmail() {
-            window.location.href = `mailto:${targetEmail}`;
+        // تحديث اسم الملف المرفق عند الاختيار
+        fileAttachment.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                let names = Array.from(this.files).map(f => f.name).join(', ');
+                fileNameDisplay.textContent = 'الملفات المحددة: ' + names;
+                fileLabel.textContent = 'تم اختيار ' + this.files.length + ' ملف/ملفات';
+            } else {
+                fileNameDisplay.textContent = '';
+                fileLabel.textContent = '📁 اضغط هنا أو اسحب الملفات لإرفاقها';
+            }
+        });
+
+        // دالة تجميع الرسالة وتجهيز رابط mailto
+        function sendEmail() {
+            let subject = encodeURIComponent(emailSubject.value.trim() || 'تواصل عبر موقع آهات صوتية');
+            let bodyText = emailBody.value.trim();
+            
+            // إضافة تنبيه للمستخدم إذا كان قد حدد ملفات (لأن المتصفحات لا تستطيع إرفاق الملفات تلقائياً عبر mailto لاعتبارات أمنية)
+            if (fileAttachment.files.length > 0) {
+                bodyText += '\n\n(ملاحظة: يرجى إرفاق الملفات المحددة يدوياً من داخل تطبيق البريد الإلكتروتي)';
+            }
+            
+            let body = encodeURIComponent(bodyText);
+            
+            // فتح تطبيق البريد مع موضوع ومحتوى الرسالة
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
         }
 
-        // الاستماع لحدث انتهاء التشغيل الصوتي
+        // عند الضغط على زر الإرسال
+        emailForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            sendEmail();
+        });
+
+        // عند انتهاء تشغيل المقطع الصوتي
         audioPlayer.addEventListener('ended', function() {
             statusMessage.style.display = 'block';
             setTimeout(function() {
-                redirectToEmail();
-            }, 1000); // الانتظار ثانية واحدة قبل التحويل
-        });
-
-        // الاستماع لضغط زر الانتقال المباشر
-        directSendBtn.addEventListener('click', function() {
-            redirectToEmail();
+                sendEmail();
+            }, 1000);
         });
     </script>
 </body>
