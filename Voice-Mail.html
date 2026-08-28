@@ -246,7 +246,7 @@
         // البريد المستهدف
         const targetEmail = 'almajdayam@gmail.com';
 
-        // تحديث اسم الملف المرفق عند الاختيار
+        // تحديث إشعار الملفات المحددة عند الاختيار
         fileAttachment.addEventListener('change', function() {
             if (this.files && this.files.length > 0) {
                 let names = Array.from(this.files).map(f => f.name).join(', ');
@@ -258,18 +258,20 @@
             }
         });
 
-        // دالة تجميع الرسالة وتجهيز رابط mailto
+        // دالة تجميع الرسالة وتوجيه المستخدم إلى البريد
         function sendEmail() {
             let subject = encodeURIComponent(emailSubject.value.trim() || 'تواصل عبر موقع آهات صوتية');
             let bodyText = emailBody.value.trim();
             
+            // في حال تم اختيار ملفات، يتم تسجيل أسمائها تلقائياً داخل نص الرسالة
             if (fileAttachment.files.length > 0) {
-                bodyText += '\n\n(ملاحظة: يرجى إرفاق الملفات المحددة يدوياً من داخل تطبيق البريد الإلكتروني)';
+                let fileNames = Array.from(fileAttachment.files).map(f => f.name).join(', ');
+                bodyText += `\n\n------------------------\n[مرفقات مطلوبة: ${fileNames}]\n(ملاحظة: يرجى إضافة الملف من خيار المرفقات في تطبيق البريد)`;
             }
             
             let body = encodeURIComponent(bodyText);
             
-            // فتح تطبيق البريد تلقائياً موجهاً إلى البريد المحدد
+            // فتح تطبيق البريد مجهزاً بالموضوع والرسالة وتفاصيل المرفق
             window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
         }
 
