@@ -14,15 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- استدعاء مكتبة EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            // تهيئة المكتبة باستخدام Public Key الخاص بك
-            emailjs.init("QYrPvYps3deJa7SHJ");
-        })();
-    </script>
-
     <style>
         :root {
             --primary-color: #4f46e5;
@@ -33,8 +24,6 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent-color: #10b981;
-            --error-color: #ef4444;
             --notice-bg: rgba(79, 70, 229, 0.15);
             --notice-border: rgba(79, 70, 229, 0.3);
         }
@@ -138,7 +127,7 @@
             min-height: 110px;
         }
 
-        /* تنويه إرسال الملفات الصوتي عبر الإيميل */
+        /* تنويه إرسال الملفات الصوتية عبر الإيميل */
         .audio-notice {
             background-color: var(--notice-bg);
             border: 1px solid var(--notice-border);
@@ -151,28 +140,6 @@
             align-items: center;
             gap: 8px;
             line-height: 1.5;
-        }
-
-        .status-message {
-            display: none;
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .status-success {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--accent-color);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .status-error {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--error-color);
-            border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
         .btn {
@@ -197,11 +164,6 @@
         .btn:hover {
             background-color: var(--primary-hover);
         }
-
-        .btn:disabled {
-            background-color: var(--text-muted);
-            cursor: not-allowed;
-        }
     </style>
 </head>
 <body>
@@ -216,17 +178,11 @@
         <div class="content">
             <div class="form-header">
                 <h1 class="title">إرسال بريد إلكتروني تلقائي</h1>
-                <p class="subtitle">أدخل بياناتك وسيتم إرسال الرسالة مباشرةً إلى البريد.</p>
+                <p class="subtitle">أدخل بياناتك وسيتم فتح تطبيق البريد لديك مباشرةً لإرسال الرسالة.</p>
             </div>
 
             <form id="emailForm">
                 
-                <!-- بريد المنسق/المرسل -->
-                <div class="form-group">
-                    <label for="userEmail" class="form-label">بريدك الإلكتروني (للرد عليك):</label>
-                    <input type="email" id="userEmail" class="form-input" placeholder="example@domain.com" required>
-                </div>
-
                 <!-- موضوع الرسالة -->
                 <div class="form-group">
                     <label for="emailSubject" class="form-label">الموضوع:</label>
@@ -239,7 +195,7 @@
                     <textarea id="emailBody" class="form-textarea" placeholder="اكتب التفاصيل هنا..." required></textarea>
                 </div>
 
-                <!-- التنويه الخاص بإرفاق الملفات الصوتي -->
+                <!-- التنويه الخاص بإرفاق الملفات الصوتية -->
                 <div class="audio-notice">
                     <span>💡</span>
                     <span><strong>تنويه:</strong> لإرسال ملف صوتي قم بالضغط على إرسال وتقم بإضافته من الإيميل.</span>
@@ -249,51 +205,24 @@
                 <button type="submit" id="submitBtn" class="btn">
                     <span>إرسال الرسالة الآن</span>
                 </button>
-
-                <!-- صندوق التنبيهات -->
-                <div id="statusMessage" class="status-message"></div>
             </form>
         </div>
     </div>
 
     <script>
         const emailForm = document.getElementById('emailForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusMessage = document.getElementById('statusMessage');
 
-        emailForm.addEventListener('submit', async function(e) {
+        emailForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'جاري إرسال البريد الإلكتروني...';
-            statusMessage.style.display = 'none';
+            // البريد المستهدف الذي ستصلك الرسائل عليه
+            const recipientEmail = "sultan2021alamoudi@gmail.com";
 
-            try {
-                // تجهيز المتغيرات لنقلها إلى EmailJS
-                const templateParams = {
-                    name: document.getElementById('userEmail').value,
-                    message: document.getElementById('emailBody').value
-                };
+            const subject = encodeURIComponent(document.getElementById('emailSubject').value);
+            const body = encodeURIComponent(document.getElementById('emailBody').value);
 
-                // إرسال البيانات باستخدام EmailJS
-                const response = await emailjs.send('service_p9kjmb7', 'template_zickfc6', templateParams);
-
-                if (response.status === 200) {
-                    statusMessage.className = 'status-message status-success';
-                    statusMessage.style.display = 'block';
-                    statusMessage.textContent = 'تم إرسال الرسالة بنجاح!';
-                    emailForm.reset();
-                } else {
-                    throw new Error('حدث خطأ أثناء إرسال البريد عبر EmailJS.');
-                }
-            } catch (error) {
-                statusMessage.className = 'status-message status-error';
-                statusMessage.style.display = 'block';
-                statusMessage.textContent = 'تعذر الإرسال: ' + error.message;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'إرسال الرسالة الآن';
-            }
+            // فتح تطبيق البريد الافتراضي مع تجهيز النص والموضوع والبريد المستهدف
+            window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
         });
     </script>
 </body>
