@@ -35,6 +35,8 @@
             --text-muted: #94a3b8;
             --accent-color: #10b981;
             --error-color: #ef4444;
+            --notice-bg: rgba(79, 70, 229, 0.15);
+            --notice-border: rgba(79, 70, 229, 0.3);
         }
 
         * {
@@ -136,43 +138,19 @@
             min-height: 110px;
         }
 
-        /* قسم إضافة الملفات */
-        .file-upload-wrapper {
-            position: relative;
-            background-color: var(--input-bg);
-            border: 1px dashed var(--border-color);
+        /* تنويه إرسال الملفات الصوتي عبر الإيميل */
+        .audio-notice {
+            background-color: var(--notice-bg);
+            border: 1px solid var(--notice-border);
             border-radius: 8px;
-            padding: 14px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.2s ease;
-        }
-
-        .file-upload-wrapper:hover {
-            border-color: var(--primary-color);
-        }
-
-        .file-input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-label {
+            padding: 12px 14px;
+            margin-bottom: 16px;
             font-size: 0.85rem;
-            color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        .file-name-display {
-            margin-top: 6px;
-            font-size: 0.8rem;
-            color: var(--accent-color);
-            word-break: break-all;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.5;
         }
 
         .status-message {
@@ -234,11 +212,11 @@
             <img src="https://files.catbox.moe/yfpo5u.png" alt="ترویسة آهات صوتية" class="header-image">
         </div>
 
-        <!-- نموذج إرسال الرسالة والملفات -->
+        <!-- نموذج إرسال الرسالة -->
         <div class="content">
             <div class="form-header">
                 <h1 class="title">إرسال بريد إلكتروني تلقائي</h1>
-                <p class="subtitle">أدخل بياناتك وارفق أي ملف ليتم إرساله مباشرةً إلى صندوق البريد.</p>
+                <p class="subtitle">أدخل بياناتك وسيتم إرسال الرسالة مباشرةً إلى البريد.</p>
             </div>
 
             <form id="emailForm">
@@ -252,7 +230,7 @@
                 <!-- موضوع الرسالة -->
                 <div class="form-group">
                     <label for="emailSubject" class="form-label">الموضوع:</label>
-                    <input type="text" id="emailSubject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="ملف جديد من موقع آهات صوتية" required>
+                    <input type="text" id="emailSubject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="رسالة جديدة من موقع آهات صوتية" required>
                 </div>
 
                 <!-- محتوى الرسالة -->
@@ -261,19 +239,15 @@
                     <textarea id="emailBody" class="form-textarea" placeholder="اكتب التفاصيل هنا..." required></textarea>
                 </div>
 
-                <!-- إرفاق ملف حقيقي (مضغوط، صوتي، صورة، إلخ) -->
-                <div class="form-group">
-                    <label class="form-label">إرفاق ملف (اختياري):</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="fileAttachment" class="file-input">
-                        <span class="file-label" id="fileLabel">📁 اضغط هنا لإرفاق الملف المباشر</span>
-                    </div>
-                    <div id="fileNameDisplay" class="file-name-display"></div>
+                <!-- التنويه الخاص بإرفاق الملفات الصوتي -->
+                <div class="audio-notice">
+                    <span>💡</span>
+                    <span><strong>تنويه:</strong> لإرسال ملف صوتي قم بالضغط على إرسال وتقم بإضافته من الإيميل.</span>
                 </div>
 
                 <!-- زر الإرسال -->
                 <button type="submit" id="submitBtn" class="btn">
-                    <span>إرسال الملف والرسالة الآن</span>
+                    <span>إرسال الرسالة الآن</span>
                 </button>
 
                 <!-- صندوق التنبيهات -->
@@ -284,67 +258,21 @@
 
     <script>
         const emailForm = document.getElementById('emailForm');
-        const fileAttachment = document.getElementById('fileAttachment');
-        const fileLabel = document.getElementById('fileLabel');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
         const submitBtn = document.getElementById('submitBtn');
         const statusMessage = document.getElementById('statusMessage');
-
-        // تحديث اسم الملف فور الاختيار
-        fileAttachment.addEventListener('change', function() {
-            if (this.files && this.files.length > 0) {
-                let file = this.files[0];
-                fileNameDisplay.textContent = 'الملف المحدد: ' + file.name + ' (' + (file.size / (1024 * 1024)).toFixed(2) + ' ميجابايت)';
-                fileLabel.textContent = 'تم اختيار الملف بنجاح';
-            } else {
-                fileNameDisplay.textContent = '';
-                fileLabel.textContent = '📁 اضغط هنا لإرفاق الملف المباشر';
-            }
-        });
 
         emailForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري إرسال البريد الإلكتروني...';
             statusMessage.style.display = 'none';
 
             try {
-                let fileUrl = '';
-
-                // إذا قام المستخدم باختيار ملف، يتم رفعه أولاً إلى Catbox
-                if (fileAttachment.files && fileAttachment.files.length > 0) {
-                    submitBtn.textContent = 'جاري رفع الملف إلى السيرفر...';
-
-                    const catboxData = new FormData();
-                    catboxData.append('reqtype', 'fileupload');
-                    catboxData.append('fileToUpload', fileAttachment.files[0]);
-
-                    const catboxResponse = await fetch('https://catbox.moe/user/api.php', {
-                        method: 'POST',
-                        body: catboxData
-                    });
-
-                    if (!catboxResponse.ok) {
-                        throw new Error('فشل رفع الملف إلى السيرفر المجاني.');
-                    }
-
-                    fileUrl = await catboxResponse.text();
-                }
-
-                submitBtn.textContent = 'جاري إرسال البريد الإلكتروني...';
-
-                // إعداد نص الرسالة ليشمل رابط الملف إن وجد
-                const originalMessage = document.getElementById('emailBody').value;
-                let fullMessage = originalMessage;
-
-                if (fileUrl) {
-                    fullMessage += `\n\n---------------------------\nرابط تحميل الملف المرفق المباشر:\n${fileUrl.trim()}`;
-                }
-
                 // تجهيز المتغيرات لنقلها إلى EmailJS
                 const templateParams = {
                     name: document.getElementById('userEmail').value,
-                    message: fullMessage
+                    message: document.getElementById('emailBody').value
                 };
 
                 // إرسال البيانات باستخدام EmailJS
@@ -353,10 +281,8 @@
                 if (response.status === 200) {
                     statusMessage.className = 'status-message status-success';
                     statusMessage.style.display = 'block';
-                    statusMessage.textContent = 'تم إرسال الرسالة بنجاح إلى البريد الإلكتروني!';
+                    statusMessage.textContent = 'تم إرسال الرسالة بنجاح!';
                     emailForm.reset();
-                    fileNameDisplay.textContent = '';
-                    fileLabel.textContent = '📁 اضغط هنا لإرفاق الملف المباشر';
                 } else {
                     throw new Error('حدث خطأ أثناء إرسال البريد عبر EmailJS.');
                 }
@@ -366,7 +292,7 @@
                 statusMessage.textContent = 'تعذر الإرسال: ' + error.message;
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'إرسال الملف والرسالة الآن';
+                submitBtn.textContent = 'إرسال الرسالة الآن';
             }
         });
     </script>
