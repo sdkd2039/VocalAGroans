@@ -14,6 +14,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <!-- استدعاء مكتبة EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // تهيئة المكتبة باستخدام Public Key الخاص بك
+            emailjs.init("QYrPvYps3deJa7SHJ");
+        })();
+    </script>
+
     <style>
         :root {
             --primary-color: #4f46e5;
@@ -232,32 +241,31 @@
                 <p class="subtitle">أدخل بياناتك وارفق أي ملف ليتم إرساله مباشرةً إلى صندوق البريد.</p>
             </div>
 
-            <!-- تم تغيير نوع النموذج ليتناسب مع إرسال البيانات دون خطأ الخطة المجانية -->
-            <form id="emailForm" action="https://formspree.io/f/mgaeejqq" method="POST">
+            <form id="emailForm">
                 
                 <!-- بريد المنسق/المرسل -->
                 <div class="form-group">
                     <label for="userEmail" class="form-label">بريدك الإلكتروني (للرد عليك):</label>
-                    <input type="email" id="userEmail" name="email" class="form-input" placeholder="example@domain.com" required>
+                    <input type="email" id="userEmail" class="form-input" placeholder="example@domain.com" required>
                 </div>
 
                 <!-- موضوع الرسالة -->
                 <div class="form-group">
                     <label for="emailSubject" class="form-label">الموضوع:</label>
-                    <input type="text" id="emailSubject" name="subject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="ملف جديد من موقع آهات صوتية" required>
+                    <input type="text" id="emailSubject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="ملف جديد من موقع آهات صوتية" required>
                 </div>
 
                 <!-- محتوى الرسالة -->
                 <div class="form-group">
                     <label for="emailBody" class="form-label">محتوى الرسالة:</label>
-                    <textarea id="emailBody" name="message" class="form-textarea" placeholder="اكتب التفاصيل هنا..." required></textarea>
+                    <textarea id="emailBody" class="form-textarea" placeholder="اكتب التفاصيل هنا..." required></textarea>
                 </div>
 
                 <!-- إرفاق ملف حقيقي (مضغوط، صوتي، صورة، إلخ) -->
                 <div class="form-group">
-                    <label class="form-label">إرفاق ملف (ZIP, MP3, PNG, إلخ):</label>
+                    <label class="form-label">إرفاق ملف (اختياري):</label>
                     <div class="file-upload-wrapper">
-                        <input type="file" id="fileAttachment" class="file-input" required>
+                        <input type="file" id="fileAttachment" class="file-input">
                         <span class="file-label" id="fileLabel">📁 اضغط هنا لإرفاق الملف المباشر</span>
                     </div>
                     <div id="fileNameDisplay" class="file-name-display"></div>
@@ -294,70 +302,63 @@
             }
         });
 
-        // رفع الملف مجاناً إلى Catbox ثم إرسال الرابط عبر Formspree
         emailForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            if (!fileAttachment.files || fileAttachment.files.length === 0) {
-                statusMessage.className = 'status-message status-error';
-                statusMessage.style.display = 'block';
-                statusMessage.textContent = 'يرجى اختيار ملف لإرفاقه.';
-                return;
-            }
-
             submitBtn.disabled = true;
-            submitBtn.textContent = 'جاري رفع الملف إلى السيرفر...';
             statusMessage.style.display = 'none';
 
             try {
-                // Step 1: رفع الملف إلى Catbox
-                const catboxData = new FormData();
-                catboxData.append('reqtype', 'fileupload');
-                catboxData.append('fileToUpload', fileAttachment.files[0]);
+                let fileUrl = '';
 
-                const catboxResponse = await fetch('https://catbox.moe/user/api.php', {
-                    method: 'POST',
-                    body: catboxData
-                });
+                // إذا قام المستخدم باختيار ملف، يتم رفعه أولاً إلى Catbox
+                if (fileAttachment.files && fileAttachment.files.length > 0) {
+                    submitBtn.textContent = 'جاري رفع الملف إلى السيرفر...';
 
-                if (!catboxResponse.ok) {
-                    throw new Error('فشل رفع الملف إلى السيرفر المجاني.');
+                    const catboxData = new FormData();
+                    catboxData.append('reqtype', 'fileupload');
+                    catboxData.append('fileToUpload', fileAttachment.files[0]);
+
+                    const catboxResponse = await fetch('https://catbox.moe/user/api.php', {
+                        method: 'POST',
+                        body: catboxData
+                    });
+
+                    if (!catboxResponse.ok) {
+                        throw new Error('فشل رفع الملف إلى السيرفر المجاني.');
+                    }
+
+                    fileUrl = await catboxResponse.text();
                 }
 
-                const fileUrl = await catboxResponse.text();
-
-                // Step 2: تجهيز البيانات وإضافة رابط الملف داخل الرسالة
                 submitBtn.textContent = 'جاري إرسال البريد الإلكتروني...';
 
+                // إعداد نص الرسالة ليشمل رابط الملف إن وجد
                 const originalMessage = document.getElementById('emailBody').value;
-                const fullMessage = `${originalMessage}\n\n---------------------------\nرابط تحميل الملف المرفق المباشر:\n${fileUrl.trim()}`;
+                let fullMessage = originalMessage;
 
-                const formPayload = {
-                    email: document.getElementById('userEmail').value,
-                    subject: document.getElementById('emailSubject').value,
+                if (fileUrl) {
+                    fullMessage += `\n\n---------------------------\nرابط تحميل الملف المرفق المباشر:\n${fileUrl.trim()}`;
+                }
+
+                // تجهيز المتغيرات لنقلها إلى EmailJS
+                const templateParams = {
+                    name: document.getElementById('userEmail').value,
                     message: fullMessage
                 };
 
-                // Step 3: إرسال البيانات عبر Formspree
-                const response = await fetch(emailForm.action, {
-                    method: 'POST',
-                    body: JSON.stringify(formPayload),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                });
+                // إرسال البيانات باستخدام EmailJS
+                const response = await emailjs.send('service_p9kjmb7', 'template_zickfc6', templateParams);
 
-                if (response.ok) {
+                if (response.status === 200) {
                     statusMessage.className = 'status-message status-success';
                     statusMessage.style.display = 'block';
-                    statusMessage.textContent = 'تم إرسال الرسالة ورابط الملف بنجاح إلى البريد الإلكتروني!';
+                    statusMessage.textContent = 'تم إرسال الرسالة بنجاح إلى البريد الإلكتروني!';
                     emailForm.reset();
                     fileNameDisplay.textContent = '';
                     fileLabel.textContent = '📁 اضغط هنا لإرفاق الملف المباشر';
                 } else {
-                    const data = await response.json();
-                    throw new Error(data.error || 'حدث خطأ أثناء إرسال البريد.');
+                    throw new Error('حدث خطأ أثناء إرسال البريد عبر EmailJS.');
                 }
             } catch (error) {
                 statusMessage.className = 'status-message status-error';
