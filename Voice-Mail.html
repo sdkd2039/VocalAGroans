@@ -21,6 +21,7 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent-color: #10b981;
+            --error-color: #ef4444;
         }
 
         * {
@@ -161,6 +162,28 @@
             word-break: break-all;
         }
 
+        .status-message {
+            display: none;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .status-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--accent-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
         .btn {
             display: flex;
             justify-content: center;
@@ -168,7 +191,7 @@
             gap: 8px;
             width: 100%;
             padding: 12px 20px;
-            margin-top: 24px;
+            margin-top: 20px;
             background-color: var(--primary-color);
             color: #ffffff;
             font-family: 'Estedad', sans-serif;
@@ -184,8 +207,9 @@
             background-color: var(--primary-hover);
         }
 
-        .btn:active {
-            transform: scale(0.98);
+        .btn:disabled {
+            background-color: var(--text-muted);
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -197,88 +221,121 @@
             <img src="https://files.catbox.moe/yfpo5u.png" alt="ترویسة آهات صوتية" class="header-image">
         </div>
 
-        <!-- نموذج إنشاء الرسالة -->
+        <!-- نموذج إرسال الرسالة والملفات -->
         <div class="content">
             <div class="form-header">
-                <h1 class="title">إنشاء رسالة إلكترونية</h1>
-                <p class="subtitle">قم بتعبئة موضوع الرسالة والنص للانتقال المباشر إلى البريد.</p>
+                <h1 class="title">إرسال بريد إلكتروني تلقائي</h1>
+                <p class="subtitle">أدخل بياناتك وارفق أي ملف ليتم إرساله مباشرةً إلى صندوق البريد.</p>
             </div>
 
-            <form id="emailForm">
+            <!-- يتم استبدال الكود FORM_ID_HERE بـ ID حسابك في Formspree -->
+            <form id="emailForm" action="https://formspree.io/f/FORM_ID_HERE" method="POST" enctype="multipart/form-data">
+                
+                <!-- بريد المنسق/المرسل -->
+                <div class="form-group">
+                    <label for="userEmail" class="form-label">بريدك الإلكتروني (للرد عليك):</label>
+                    <input type="email" id="userEmail" name="email" class="form-input" placeholder="example@domain.com" required>
+                </div>
+
                 <!-- موضوع الرسالة -->
                 <div class="form-group">
                     <label for="emailSubject" class="form-label">الموضوع:</label>
-                    <input type="text" id="emailSubject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="تواصل عبر موقع آهات صوتية">
+                    <input type="text" id="emailSubject" name="subject" class="form-input" placeholder="اكتب موضوع الرسالة هنا..." value="ملف جديد من موقع آهات صوتية" required>
                 </div>
 
-                <!-- نص الرسالة -->
+                <!-- محتوى الرسالة -->
                 <div class="form-group">
                     <label for="emailBody" class="form-label">محتوى الرسالة:</label>
-                    <textarea id="emailBody" class="form-textarea" placeholder="اكتب نص رسالتك هنا..."></textarea>
+                    <textarea id="emailBody" name="message" class="form-textarea" placeholder="اكتب التفاصيل هنا..." required></textarea>
                 </div>
 
-                <!-- إرفاق ملفات -->
+                <!-- إرفاق ملف حقيقي (مضغوط، صوتي، صورة، إلخ) -->
                 <div class="form-group">
-                    <label class="form-label">إرفاق ملفات (اختياري):</label>
+                    <label class="form-label">إرفاق ملف (ZIP, MP3, PNG, إلخ):</label>
                     <div class="file-upload-wrapper">
-                        <input type="file" id="fileAttachment" class="file-input" multiple>
-                        <span class="file-label" id="fileLabel">📁 اضغط هنا أو اسحب الملفات لإرفاقها</span>
+                        <input type="file" id="fileAttachment" name="upload_file" class="file-input" required>
+                        <span class="file-label" id="fileLabel">📁 اضغط هنا لإرفاق الملف المباشر</span>
                     </div>
                     <div id="fileNameDisplay" class="file-name-display"></div>
                 </div>
 
                 <!-- زر الإرسال -->
-                <button type="submit" class="btn">
-                    <span>إرسال الرسالة الإلكترونية</span>
+                <button type="submit" id="submitBtn" class="btn">
+                    <span>إرسال الملف والرسالة الآن</span>
                 </button>
+
+                <!-- صندوق التنبيهات -->
+                <div id="statusMessage" class="status-message"></div>
             </form>
         </div>
     </div>
 
     <script>
         const emailForm = document.getElementById('emailForm');
-        const emailSubject = document.getElementById('emailSubject');
-        const emailBody = document.getElementById('emailBody');
         const fileAttachment = document.getElementById('fileAttachment');
         const fileLabel = document.getElementById('fileLabel');
         const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMessage = document.getElementById('statusMessage');
 
-        // البريد المستهدف
-        const targetEmail = 'almajdayam@gmail.com';
-
-        // تحديث إشعار الملفات المحددة عند الاختيار
+        // تحديث اسم الملف فور الاختيار
         fileAttachment.addEventListener('change', function() {
             if (this.files && this.files.length > 0) {
-                let names = Array.from(this.files).map(f => f.name).join(', ');
-                fileNameDisplay.textContent = 'الملفات المحددة: ' + names;
-                fileLabel.textContent = 'تم اختيار ' + this.files.length + ' ملف/ملفات';
+                let file = this.files[0];
+                fileNameDisplay.textContent = 'الملف المحدد: ' + file.name + ' (' + (file.size / (1024 * 1024)).toFixed(2) + ' ميجابايت)';
+                fileLabel.textContent = 'تم اختيار الملف بنجاح';
             } else {
                 fileNameDisplay.textContent = '';
-                fileLabel.textContent = '📁 اضغط هنا أو اسحب الملفات لإرفاقها';
+                fileLabel.textContent = '📁 اضغط هنا لإرفاق الملف المباشر';
             }
         });
 
-        // دالة تجميع الرسالة وتوجيه المستخدم إلى البريد
-        function sendEmail() {
-            let subject = encodeURIComponent(emailSubject.value.trim() || 'تواصل عبر موقع آهات صوتية');
-            let bodyText = emailBody.value.trim();
-            
-            // في حال تم اختيار ملفات، يتم تسجيل أسمائها تلقائياً داخل نص الرسالة
-            if (fileAttachment.files.length > 0) {
-                let fileNames = Array.from(fileAttachment.files).map(f => f.name).join(', ');
-                bodyText += `\n\n------------------------\n[مرفقات مطلوبة: ${fileNames}]\n(ملاحظة: يرجى إضافة الملف من خيار المرفقات في تطبيق البريد)`;
-            }
-            
-            let body = encodeURIComponent(bodyText);
-            
-            // فتح تطبيق البريد مجهزاً بالموضوع والرسالة وتفاصيل المرفق
-            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-        }
-
-        // عند الضغط على زر الإرسال
-        emailForm.addEventListener('submit', function(e) {
+        // إرسال البيانات عبر AJAX دون الخروج من الصفحة
+        emailForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            sendEmail();
+
+            // التأكد من أن الرابط ليس القالب الافتراضي
+            if (emailForm.action.includes('FORM_ID_HERE')) {
+                statusMessage.className = 'status-message status-error';
+                statusMessage.style.display = 'block';
+                statusMessage.textContent = 'يرجى وضع Form ID الخاص بك في كود HTML (مكان FORM_ID_HERE) لتفعيل الإرسال إلى almajdayam@gmail.com.';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال والنقل...';
+            statusMessage.style.display = 'none';
+
+            const formData = new FormData(emailForm);
+
+            try {
+                const response = await fetch(emailForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    statusMessage.className = 'status-message status-success';
+                    statusMessage.style.display = 'block';
+                    statusMessage.textContent = 'تم إرسال الرسالة والملف بنجاح إلى البريد الإلكتروني!';
+                    emailForm.reset();
+                    fileNameDisplay.textContent = '';
+                    fileLabel.textContent = '📁 اضغط هنا لإرفاق الملف المباشر';
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.error || 'حدث خطأ أثناء رفع الملف.');
+                }
+            } catch (error) {
+                statusMessage.className = 'status-message status-error';
+                statusMessage.style.display = 'block';
+                statusMessage.textContent = 'تعذر الإرسال: ' + error.message;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'إرسال الملف والرسالة الآن';
+            }
         });
     </script>
 </body>
