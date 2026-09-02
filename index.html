@@ -665,7 +665,7 @@
 </footer>
 
 <script>
-    const sheetId = '1mvsDJJRJuiDg1s45KwJw7x6dnodiPZck8WNAFz_C8tU';
+const sheetId = '1mvsDJJRJuiDg1s45KwJw7x6dnodiPZck8WNAFz_C8tU';
     
     let categoriesData = { 'آهات': [], 'مؤثرات': [], 'انتقالات': [], 'صوت': [] };
     let randomAllAudio = []; 
@@ -716,18 +716,36 @@
             const res = await fetch(queryUrl);
             const text = await res.text();
             const json = JSON.parse(text.substr(47).slice(0, -2));
-            const rows = json.table.rows; 
+            const rows = json.table.rows || []; 
 
             return rows.map((row) => {
-                const title = row.c[0] ? row.c[0].v : 'بدون عنوان'; 
-                const url = row.c[1] ? row.c[1].v : ''; 
-                const desc = row.c[2] ? row.c[2].v : 'مؤثر صوتي'; 
-                const dateAdded = row.c[3] ? row.c[3].f || row.c[3].v : '';
-                const downloadUrl = row.c[5] && row.c[5].v ? row.c[5].v : url; 
+                if (!row.c) return null;
+                
+                // العمود A (0): العنوان
+                const title = row.c[0] && row.c[0].v ? String(row.c[0].v) : 'بدون عنوان'; 
+                // العمود B (1): رابط الصوت الأساسي
+                const url = row.c[1] && row.c[1].v ? String(row.c[1].v) : ''; 
+                // العمود C (2): الوصف
+                const desc = row.c[2] && row.c[2].v ? String(row.c[2].v) : 'مؤثر صوتي'; 
+                
+                // العمود D (3): تاريخ الإضافة (فحص التنسيق النصي والقيمة الفعلية)
+                let dateAdded = '';
+                if (row.c[3]) {
+                    dateAdded = row.c[3].f ? String(row.c[3].f) : (row.c[3].v ? String(row.c[3].v) : '');
+                }
+                
+                // العمود E (4): رابط تحميل ZIP إن وجد
+                let downloadUrl = url;
+                if (row.c[4] && row.c[4].v) {
+                    downloadUrl = String(row.c[4].v);
+                } else if (row.c[5] && row.c[5].v) {
+                    downloadUrl = String(row.c[5].v);
+                }
+
                 const uniqueId = generateCleanId(url);
                 
                 return { id: uniqueId, title, url, desc, dateAdded, downloadUrl, category: sheetName };
-            }).filter(item => item.url !== '' && item.url.startsWith('http'));
+            }).filter(item => item && item.url !== '' && item.url.startsWith('http'));
         } catch (err) {
             console.error(`خطأ في ورقة: ${sheetName}`, err);
             return [];
@@ -1162,7 +1180,6 @@
         return min + ':' + sec;
     }
 
-    // دعم أزرار لوحة المفاتيح واختصارات الوسائط (المسافة، أزرار الميديا المخصصة، وأسهم التقديم والتأخير)
     document.addEventListener('keydown', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
